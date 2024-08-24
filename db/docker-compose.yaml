@@ -35,5 +35,19 @@ services:
     networks:
       - app_network
 
+  postgrest:
+    image: postgrest/postgrest
+    ports:
+      - ${POSTGREST_HOST_PORT}:${POSTGREST_PORT}
+    environment:
+      PGRST_DB_URI: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
+      PGRST_OPENAPI_SERVER_PROXY_URI: http://localhost:${POSTGREST_HOST_PORT}
+      PGRST_DB_SCHEMA: ${POSTGREST_SCHEMAS}
+      PGRST_DB_ANON_ROLE: ${POSTGRES_USER}
+    depends_on:
+      - db
+    networks:
+      - app_network
+
 networks:
   app_network:

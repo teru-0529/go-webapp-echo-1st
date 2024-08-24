@@ -13,9 +13,9 @@ echoを使ったAPIサーバー
 
 ## feature
 
-* 項目定義
-* DB定義
-* dbmigration
+* [x] 項目定義
+* [x] DB定義
+* [x] dbmigration
 * API定義
 * PostgRest
 * APIgenerate

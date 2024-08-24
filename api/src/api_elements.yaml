@@ -1,0 +1,99 @@
+# 受注番号
+orderNo:
+  type: string
+  pattern: ^RO-[0-9]{7}$
+  minLength: 10
+  maxLength: 10
+  description: 受注番号
+  example: RO-0000023
+
+# 日付
+sysDate:
+  type: string
+  format: date
+  description: 日付
+  example: "2024-03-15"
+
+# 処理担当者名
+operatorName:
+  type: string
+  minLength: 3
+  maxLength: 30
+  description: 担当者名称
+  example: 織田信長
+
+# 得意先名称
+customerName:
+  type: string
+  maxLength: 50
+  description: 受注先企業名
+  example: 徳川商事
+
+# 金額
+price:
+  type: integer
+  minimum: 0
+  maximum: 9999999
+  description: 金額
+  example: 15000
+
+# 商品ID
+productId:
+  type: string
+  pattern: ^P[0-9]{4}$
+  minLength: 5
+  maxLength: 5
+  description: 商品ID
+  example: P0001
+
+# 商品名
+productName:
+  type: string
+  maxLength: 30
+  description: 商品名称
+  example: 日本刀
+
+# 数量
+quantity:
+  type: integer
+  minimum: 0
+  maximum: 1000
+  description: 数量
+  example: 13
+
+# 利益率
+profitRate:
+  type: number
+  minimum: 0
+  maximum: 1
+  description: 利益額/売価
+  example: 0.284
+
+# 受注ステータス
+orderStatus:
+  type: string
+  enum:
+    - WORK_IN_PROGRESS
+    - CANCELED
+    - COMPLETED
+  description: 受注状況
+  example: COMPLETED
+
+# 備考
+note:
+  type: string
+  description: 備考
+  example: 注意してください
+
+# キャンセルNO
+cancelNo:
+  type: integer
+  description: サロゲートキー
+  example: 13
+
+# 出荷NO
+sippingNo:
+  type: integer
+  description: サロゲートキー
+  example: 5
+

@@ -1,0 +1,5 @@
+sources:
+  - schema: orders
+    sourceType: local
+    gitRepository: null
+    gitTag: null

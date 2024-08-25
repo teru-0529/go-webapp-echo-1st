@@ -76,6 +76,7 @@ orderStatus:
     - WORK_IN_PROGRESS
     - CANCELED
     - COMPLETED
+    - PREPARING
   description: 受注状況
   example: COMPLETED
 

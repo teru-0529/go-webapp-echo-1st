@@ -9,6 +9,9 @@ CREATE TABLE orders.receivings (
   order_date date NOT NULL DEFAULT current_timestamp,
   operator_name varchar(30) NOT NULL check (LENGTH(operator_name) >= 3),
   customer_name varchar(50) NOT NULL,
+  total_order_price integer NOT NULL DEFAULT 0 check (0 <= total_order_price AND total_order_price <= 9999999),
+  remaining_order_price integer NOT NULL DEFAULT 0 check (0 <= remaining_order_price AND remaining_order_price <= 9999999),
+  order_status orders.order_status NOT NULL DEFAULT 'PREPARING',
   created_at timestamp NOT NULL DEFAULT current_timestamp,
   updated_at timestamp NOT NULL DEFAULT current_timestamp,
   created_by varchar(58),
@@ -23,6 +26,9 @@ COMMENT ON COLUMN orders.receivings.order_no IS '受注番号';
 COMMENT ON COLUMN orders.receivings.order_date IS '受注日';
 COMMENT ON COLUMN orders.receivings.operator_name IS '処理担当者名';
 COMMENT ON COLUMN orders.receivings.customer_name IS '得意先名称';
+COMMENT ON COLUMN orders.receivings.total_order_price IS '受注金額';
+COMMENT ON COLUMN orders.receivings.remaining_order_price IS '受注残額';
+COMMENT ON COLUMN orders.receivings.order_status IS '受注ステータス';
 COMMENT ON COLUMN orders.receivings.created_at IS '作成日時';
 COMMENT ON COLUMN orders.receivings.updated_at IS '更新日時';
 COMMENT ON COLUMN orders.receivings.created_by IS '作成者';

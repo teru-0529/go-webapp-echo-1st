@@ -1,6 +1,6 @@
 data_type: define_tables
 version: 3.2.7
-create_at: 2024-08-23T22:39:00+09:00
+create_at: 2024-08-25T19:46:08+09:00
 schema:
   name_jp: 受注管理
   name_en: orders
@@ -21,6 +21,15 @@ tables:
       - name: 得意先名称
         nullable: false
         default: null
+      - name: 受注金額
+        nullable: false
+        default: "0"
+      - name: 受注残額
+        nullable: false
+        default: "0"
+      - name: 受注ステータス
+        nullable: false
+        default: PREPARING
     constraint:
       primary_key:
         - 受注番号
@@ -60,7 +69,7 @@ tables:
         default: "0.00"
       - name: 受注ステータス
         nullable: false
-        default: WORK_IN_PROGRESS
+        default: PREPARING
     constraint:
       primary_key:
         - 受注番号

@@ -9,6 +9,7 @@ patch:
   description: 受注番号を指定して、受注リソースを修正する。
   parameters:
     - $ref: ../parameters.yaml#/path/orderNo
+    - $ref: ../parameters.yaml#/header/traceId
   requestBody:
     description: 受注(修正項目)
     required: true
@@ -33,6 +34,7 @@ get:
   description: 受注番号を指定して、受注リソースを取得する。
   parameters:
     - $ref: ../parameters.yaml#/path/orderNo
+    - $ref: ../parameters.yaml#/header/traceId
   responses:
     200:
       description: OK

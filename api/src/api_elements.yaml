@@ -120,3 +120,10 @@ offset:
   description: 検索実行時のオフセット値
   example: 0
 
+# トレースID
+traceId:
+  type: string
+  maxLength: 58
+  description: ゲートウェイが発行する識別キー
+  example: 1000::P0673822
+

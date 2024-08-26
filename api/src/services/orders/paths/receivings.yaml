@@ -7,6 +7,8 @@ post:
   operationId: orders.receivings.post
   summary: 受注登録
   description: 受注リソースを登録する。
+  parameters:
+    - $ref: ../parameters.yaml#/header/traceId
   requestBody:
     description: 受注(登録項目)
     required: true
@@ -36,6 +38,7 @@ get:
     - $ref: ../../../components/parameters.yaml#/query/offset
     - $ref: ../parameters.yaml#/query/customerName
     - $ref: ../parameters.yaml#/query/orderStatus
+    - $ref: ../parameters.yaml#/header/traceId
   responses:
     200:
       description: OK

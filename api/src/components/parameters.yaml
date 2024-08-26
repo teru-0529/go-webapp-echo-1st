@@ -1,0 +1,22 @@
+path: null
+
+query:
+  # 検索結果数上限値
+  limit:
+    name: limit
+    in: query
+    required: false
+    schema:
+      $ref: ../api_elements.yaml#/limit
+    description: 検索結果数上限値(デフォルト値は20)
+    example: 100
+
+  # 検索オフセット値
+  offset:
+    name: offset
+    in: query
+    required: false
+    schema:
+      $ref: ../api_elements.yaml#/offset
+    description: 検索オフセット値(デフォルト値は0)
+    example: 20

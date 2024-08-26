@@ -1,0 +1,65 @@
+# ReceiveInstructionリソース
+
+# TITLE:
+# キャンセル指示(PostRequestBody)
+CancelInstructionBody:
+  description: キャンセル指示登録
+  type: object
+  properties:
+    # 受注番号
+    orderNo:
+      $ref: ../../../api_elements.yaml#/orderNo
+    # 商品ID
+    productId:
+      $ref: ../../../api_elements.yaml#/productId
+    # キャンセル担当者氏名
+    operatorName:
+      $ref: ../../../api_elements.yaml#/operatorName
+      description: キャンセル担当者氏名
+    # キャンセル数
+    quantity:
+      $ref: ../../../api_elements.yaml#/quantity
+      description: キャンセル数
+    # キャンセル理由
+    reason:
+      $ref: ../../../api_elements.yaml#/note
+      description: キャンセル理由
+  required:
+    - orderNo
+    - productId
+    - operatorName
+    - quantity
+  example:
+    orderNo: RO-0000042
+    productId: P0023
+    operatorName: 武田信玄
+    quantity: 4
+    reason: 顧客都合
+
+# ----+----+----+----+----+----+----+----+----+----+
+
+# TITLE:
+# 出荷指示(PostRequestBody)
+ShippingInstructionBody:
+  description: 出荷指示登録
+  type: object
+  properties:
+    # 受注番号
+    orderNo:
+      $ref: ../../../api_elements.yaml#/orderNo
+    # 商品ID
+    productId:
+      $ref: ../../../api_elements.yaml#/productId
+    # 出荷担当者氏名
+    operatorName:
+      $ref: ../../../api_elements.yaml#/operatorName
+      description: 出荷担当者氏名
+    # 出荷数
+    quantity:
+      $ref: ../../../api_elements.yaml#/quantity
+      description: 出荷数
+  required:
+    - orderNo
+    - productId
+    - operatorName
+    - quantity

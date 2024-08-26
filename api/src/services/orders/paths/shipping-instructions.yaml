@@ -1,0 +1,25 @@
+# /shipping-instructions
+
+# TITLE:
+post:
+  tags:
+    - order
+  operationId: orders.shipping-instructions.post
+  summary: 出荷指示登録
+  description: 受注残の存在する受注明細を指定して出荷指示を登録する。
+  requestBody:
+    description: 出荷指示
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../resources/Receive-Instruction.yaml#/ShippingInstructionBody
+  responses:
+    201:
+      description: Create
+      headers:
+        location:
+          $ref: ../../../components/response-headers.yaml#/location
+          example: /receivings/RO-0000001
+    default:
+      $ref: ../../../components/error_response.yaml

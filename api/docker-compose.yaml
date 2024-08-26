@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  redocly:
+    image: redocly/cli:latest
+    container_name: redocly
+    working_dir: /${WORKDIR}
+    tty: true
+    volumes:
+      - .:/${WORKDIR}

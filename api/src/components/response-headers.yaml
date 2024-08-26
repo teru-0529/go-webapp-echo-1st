@@ -1,0 +1,13 @@
+# POST時の作成リソースパス
+location:
+  schema:
+    type: string
+  description: 新規に作成したリソースのURL
+  example: /accounts/24
+
+# クエリ検索時の残数有無
+remaining:
+  schema:
+    type: boolean
+  description: 検索結果をlimit件数でスライスした際に残データがある場合にtrue
+  example: true

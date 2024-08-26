@@ -1,0 +1,27 @@
+path:
+  # 受注番号
+  orderNo:
+    name: order_no
+    in: path
+    required: true
+    schema:
+      $ref: ../../api_elements.yaml#/orderNo
+
+query:
+  # 得意先名称
+  customerName:
+    name: customer_name
+    in: query
+    required: false
+    schema:
+      $ref: ../../api_elements.yaml#/customerName
+    description: 【検索条件】得意先名称（完全一致）
+
+  # 受注ステータス
+  orderStatus:
+    name: order_status
+    in: query
+    required: false
+    schema:
+      $ref: ../../api_elements.yaml#/orderStatus
+    description: 【検索条件】受注ステータス

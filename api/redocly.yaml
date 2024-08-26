@@ -8,10 +8,6 @@ rules:
   security-defined: off
   # 400系は統一レスポンスで記載するため不要
   operation-4xx-response: off
-  # exampleの無効なtype(null)を許容する
-  no-invalid-media-type-example:
-    serverity: off
-    allowAdditionalProperties: false
 
 theme:
   openapi:

@@ -10,7 +10,7 @@ servers:
       host:
         default: localhost
       port:
-        default: "9302"
+        default: "7011"
   - url: https://production/orders/api
     description: プロダクション環境
 tags:

@@ -27,7 +27,7 @@ customerName:
   type: string
   maxLength: 50
   description: 受注先企業名
-  example: 徳川商事
+  example: 徳川商事株式会社
 
 # 金額
 price:
@@ -76,6 +76,7 @@ orderStatus:
     - WORK_IN_PROGRESS
     - CANCELED
     - COMPLETED
+    - PREPARING
   description: 受注状況
   example: COMPLETED
 
@@ -96,4 +97,33 @@ sippingNo:
   type: integer
   description: サロゲートキー
   example: 5
+
+# パス
+urlPath:
+  type: string
+  maxLength: 100
+  description: パス
+  example: /top
+
+# 検索結果数上限値
+limit:
+  type: integer
+  minimum: 1
+  maximum: 2000
+  description: 検索結果の取得数上限値
+  example: 100
+
+# 検索オフセット値
+offset:
+  type: integer
+  minimum: 0
+  description: 検索実行時のオフセット値
+  example: 0
+
+# トレースID
+traceId:
+  type: string
+  maxLength: 58
+  description: ゲートウェイが発行する識別キー
+  example: 1000::P0673822
 

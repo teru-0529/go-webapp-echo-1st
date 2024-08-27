@@ -1,6 +1,6 @@
 data_type: define_elements
 version: 3.0.22
-create_at: 2024-08-23T22:33:18+09:00
+create_at: 2024-08-26T22:28:10+09:00
 elements:
   - name_jp: 受注番号
     name_en: orderNo
@@ -40,7 +40,7 @@ elements:
     max_digits: 50
     min_value: null
     max_value: null
-    example: 徳川商事
+    example: 徳川商事株式会社
     description: 受注先企業名
   - name_jp: 金額
     name_en: price
@@ -132,6 +132,46 @@ elements:
     max_value: null
     example: 5
     description: サロゲートキー
+  - name_jp: パス
+    name_en: urlPath
+    domain: 文字列
+    reg_ex: null
+    min_digits: null
+    max_digits: 100
+    min_value: null
+    max_value: null
+    example: /top
+    description: パス
+  - name_jp: 検索結果数上限値
+    name_en: limit
+    domain: 整数
+    reg_ex: null
+    min_digits: null
+    max_digits: null
+    min_value: 1
+    max_value: 2000
+    example: 100
+    description: 検索結果の取得数上限値
+  - name_jp: 検索オフセット値
+    name_en: offset
+    domain: 整数
+    reg_ex: null
+    min_digits: null
+    max_digits: null
+    min_value: 0
+    max_value: null
+    example: 0
+    description: 検索実行時のオフセット値
+  - name_jp: トレースID
+    name_en: traceId
+    domain: 文字列
+    reg_ex: null
+    min_digits: null
+    max_digits: 58
+    min_value: null
+    max_value: null
+    example: 1000::P0673822
+    description: ゲートウェイが発行する識別キー
 delive_elements:
   - origin: 日付
     name_jp: 受注日
@@ -142,8 +182,8 @@ delive_elements:
     name_en: orderPIC
     description: 受注担当者名
   - origin: 金額
-    name_jp: トータル売価
-    name_en: totalPrice
+    name_jp: 受注金額
+    name_en: totalOrderPrice
     description: 受注総額
   - origin: 金額
     name_jp: 商品原価
@@ -181,6 +221,10 @@ delive_elements:
     name_jp: キャンセル理由
     name_en: cancelReason
     description: キャンセル理由
+  - origin: 金額
+    name_jp: 受注残額
+    name_en: remainingOrderPrice
+    description: 受注残額
 segments:
   - key: 受注ステータス
     value: WORK_IN_PROGRESS
@@ -194,3 +238,7 @@ segments:
     value: COMPLETED
     name: 出荷完了
     description: 出荷完了
+  - key: 受注ステータス
+    value: PREPARING
+    name: 準備中
+    description: 準備中

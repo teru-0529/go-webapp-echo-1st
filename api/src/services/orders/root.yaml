@@ -1,0 +1,27 @@
+openapi: 3.1.0
+info:
+  title: Orders API
+  description: 受注管理API
+  version: 1.0.0
+servers:
+  - url: http://{host}:{port}
+    description: ローカル開発環境
+    variables:
+      host:
+        default: localhost
+      port:
+        default: "7011"
+  - url: https://production/orders/api
+    description: プロダクション環境
+tags:
+  - name: order
+    description: 受注
+paths:
+  /receivings:
+    $ref: ./paths/receivings.yaml
+  /receivings/{order_no}:
+    $ref: ./paths/receivings-no.yaml
+  /cancel-instructions:
+    $ref: ./paths/cancel-instructions.yaml
+  /shipping-instructions:
+    $ref: ./paths/shipping-instructions.yaml

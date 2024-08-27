@@ -1,0 +1,48 @@
+# /receivings-no
+
+# TITLE:
+patch:
+  tags:
+    - order
+  operationId: orders.receivings.no.patch
+  summary: 受注修正
+  description: 受注番号を指定して、受注リソースを修正する。
+  parameters:
+    - $ref: ../parameters.yaml#/path/orderNo
+    - $ref: ../parameters.yaml#/header/traceId
+  requestBody:
+    description: 受注(修正項目)
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../resources/Receiving.yaml#/ReceivingPatchBody
+  responses:
+    200:
+      description: OK
+    404:
+      description: Not Found
+    default:
+      $ref: ../../../components/error_response.yaml
+
+# TITLE:
+get:
+  tags:
+    - order
+  operationId: orders.receivings.no.get
+  summary: 受注取得
+  description: 受注番号を指定して、受注リソースを取得する。
+  parameters:
+    - $ref: ../parameters.yaml#/path/orderNo
+    - $ref: ../parameters.yaml#/header/traceId
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../resources/Receiving.yaml#/ReceivingWithDetail
+    404:
+      description: Not Found
+    default:
+      $ref: ../../../components/error_response.yaml

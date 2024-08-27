@@ -1,0 +1,27 @@
+# /cancel-instructions
+
+# TITLE:
+post:
+  tags:
+    - order
+  operationId: orders.cancel-instructions.post
+  summary: キャンセル指示登録
+  description: 受注残の存在する受注明細を指定してキャンセル指示を登録する。
+  parameters:
+    - $ref: ../parameters.yaml#/header/traceId
+  requestBody:
+    description: キャンセル指示
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../resources/Receive-Instruction.yaml#/CancelInstructionBody
+  responses:
+    201:
+      description: Create
+      headers:
+        location:
+          $ref: ../../../components/response-headers.yaml#/location
+          example: /receivings/RO-0000001
+    default:
+      $ref: ../../../components/error_response.yaml

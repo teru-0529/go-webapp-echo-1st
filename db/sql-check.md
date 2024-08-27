@@ -7,7 +7,7 @@ INSERT INTO orders.products VALUES (default,'火縄銃',40000,default,default,'1
 INSERT INTO orders.products VALUES (default,'弓',15000,default,default,'100001-P0673822','100001-P0673822');
 
 -- 受注
-INSERT INTO orders.receivings VALUES (default,default,'徳川家康','織田物産',default,default,'100002-P0673822','100002-P0673822');
+INSERT INTO orders.receivings VALUES (default,default,'徳川家康','織田物産',default,default,default,default,default,'100002-P0673822','100002-P0673822');
 
 -- 受注明細
 INSERT INTO orders.receiving_details VALUES ('RO-0000001','P0001',5,default,default,default,default,default,default,default,default,default,'100002-P0673822','100002-P0673822');

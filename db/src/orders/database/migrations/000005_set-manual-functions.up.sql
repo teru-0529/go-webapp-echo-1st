@@ -33,16 +33,34 @@ EXECUTE PROCEDURE orders.products_pre_process();
 -- 受注:登録「前」処理
 -- Create Function
 CREATE OR REPLACE FUNCTION orders.receivings_pre_process() RETURNS TRIGGER AS $$
+DECLARE
+  x_count_details integer; --受注明細レコード数
 BEGIN
-  -- 導出属性の算出:受注番号
-  NEW.order_no:='RO-'||to_char(nextval('orders.order_no_seed'),'FM0000000');
+  -- (INSERT時のみ)
+  IF (TG_OP = 'INSERT') THEN
+    -- 導出属性の算出:受注番号
+    NEW.order_no:='RO-'||to_char(nextval('orders.order_no_seed'),'FM0000000');
+  END IF;
+  -- (INSERT時のみ)
+
+  -- 導出属性の算出:受注ステータス
+  SELECT COUNT(1) INTO x_count_details FROM orders.receiving_details WHERE order_no = NEW.order_no;
+  IF x_count_details = 0 THEN
+    NEW.order_status:= 'PREPARING';
+  ELSIF NEW.remaining_order_price != 0 THEN
+    NEW.order_status:= 'WORK_IN_PROGRESS';
+  ELSIF NEW.total_order_price = 0 THEN
+    NEW.order_status:= 'CANCELED';
+  ELSE
+    NEW.order_status:= 'COMPLETED';
+  END IF;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 -- Create Trigger
 CREATE TRIGGER pre_process
-  BEFORE INSERT
+  BEFORE INSERT OR UPDATE
   ON orders.receivings
   FOR EACH ROW
 EXECUTE PROCEDURE orders.receivings_pre_process();
@@ -118,9 +136,36 @@ EXECUTE PROCEDURE orders.receiving_details_pre_process();
 -- ----+----+----+----+----+----+----+
 
 
+-- 受注明細:登録「後」処理
+-- Create Function
+CREATE OR REPLACE FUNCTION orders.receiving_details_post_process() RETURNS TRIGGER AS $$
+BEGIN
+  -- 「受注」:受注金額/受注残額更新
+  UPDATE orders.receivings
+  SET total_order_price = total_order_price + NEW.receiving_quantity * NEW.sellling_price,
+      remaining_order_price = remaining_order_price + NEW.receiving_quantity * NEW.sellling_price,
+      updated_by = NEW.created_by
+  WHERE order_no = NEW.order_no;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create Trigger
+CREATE TRIGGER post_process
+  AFTER INSERT
+  ON orders.receiving_details
+  FOR EACH ROW
+EXECUTE PROCEDURE orders.receiving_details_post_process();
+
+
+-- ----+----+----+----+----+----+----+
+
+
 -- キャンセル指示:登録「後」処理
 -- Create Function
 CREATE OR REPLACE FUNCTION orders.cancel_instructions_post_process() RETURNS TRIGGER AS $$
+DECLARE
+  x_sellling_price integer; --販売単価
 BEGIN
   -- 「受注明細」:キャンセル数更新
   UPDATE orders.receiving_details
@@ -128,6 +173,19 @@ BEGIN
       updated_by = NEW.created_by
   WHERE order_no = NEW.order_no
     AND product_id = NEW.product_id;
+
+  -- 「受注明細」:販売単価取得
+  SELECT sellling_price INTO x_sellling_price
+  FROM orders.receiving_details
+  WHERE order_no = NEW.order_no
+    AND product_id = NEW.product_id;
+
+  -- 「受注」:受注金額/受注残額更新
+  UPDATE orders.receivings
+  SET total_order_price = total_order_price - NEW.cancel_quantity * x_sellling_price,
+      remaining_order_price = remaining_order_price - NEW.cancel_quantity * x_sellling_price,
+      updated_by = NEW.created_by
+  WHERE order_no = NEW.order_no;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -146,6 +204,8 @@ EXECUTE PROCEDURE orders.cancel_instructions_post_process();
 -- 出荷指示:登録「後」処理
 -- Create Function
 CREATE OR REPLACE FUNCTION orders.shipping_instructions_post_process() RETURNS TRIGGER AS $$
+DECLARE
+  x_sellling_price integer; --販売単価
 BEGIN
   -- 「受注明細」:出荷数更新
   UPDATE orders.receiving_details
@@ -153,6 +213,18 @@ BEGIN
       updated_by = NEW.created_by
   WHERE order_no = NEW.order_no
     AND product_id = NEW.product_id;
+
+  -- 「受注明細」:販売単価取得
+  SELECT sellling_price INTO x_sellling_price
+  FROM orders.receiving_details
+  WHERE order_no = NEW.order_no
+    AND product_id = NEW.product_id;
+
+  -- 「受注」:受注金額/受注残額更新
+  UPDATE orders.receivings
+  SET remaining_order_price = remaining_order_price - NEW.shipping_quantity * x_sellling_price,
+      updated_by = NEW.created_by
+  WHERE order_no = NEW.order_no;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

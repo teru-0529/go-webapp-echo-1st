@@ -1,0 +1,16 @@
+extends:
+  - recommended
+
+rules:
+  # ライセンス情報は考慮外(今後検討の可能性あり)
+  info-license: off
+  # セキュリティ(認証)情報はGateway層で実施するため不要
+  security-defined: off
+  # 400系は統一レスポンスで記載するため不要
+  operation-4xx-response: off
+
+theme:
+  openapi:
+    disableSearch: true
+    hideDownloadButton: true
+    pathInMiddlePanel: true

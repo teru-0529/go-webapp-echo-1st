@@ -1,0 +1,278 @@
+# Receivingリソース
+
+# TITLE:
+# 受注(QueryResult)
+ReceivingArray:
+  description: 受注の集合
+  type: array
+  items:
+    $ref: "#/Receiving"
+  example:
+    - orderNo: RO-0000001
+      orderDate: 2024-01-01
+      operatorName: 織田信長
+      customerName: 徳川物産株式会社
+      totalOrderPrice: 280000
+      remainingOrderPrice: 280000
+      orderStatus: COMPLETED
+    - orderNo: RO-0000002
+      orderDate: 2024-03-14
+      operatorName: 織田信長
+      customerName: 株式会社島津製作所
+      totalOrderPrice: 0
+      remainingOrderPrice: 0
+      orderStatus: CANCELED
+    - orderNo: RO-0000003
+      orderDate: 2024-04-26
+      operatorName: 上杉謙信
+      customerName: 徳川物産株式会社
+      totalOrderPrice: 145000
+      remainingOrderPrice: 34000
+      orderStatus: WORK_IN_PROGRESS
+
+Receiving:
+  description: 受注
+  type: object
+  properties:
+    # 受注番号
+    orderNo:
+      $ref: ../../../api_elements.yaml#/orderNo
+    # 受注日
+    orderDate:
+      $ref: ../../../api_elements.yaml#/sysDate
+      description: 受注日
+    # 受注担当者氏名
+    operatorName:
+      $ref: ../../../api_elements.yaml#/operatorName
+      description: 受注担当者氏名
+    # 得意先名称
+    customerName:
+      $ref: ../../../api_elements.yaml#/customerName
+    # 受注金額
+    totalOrderPrice:
+      $ref: ../../../api_elements.yaml#/price
+      description: 受注金額
+    # 受注残額
+    remainingOrderPrice:
+      $ref: ../../../api_elements.yaml#/price
+      description: 受注残額
+    # 受注ステータス
+    orderStatus:
+      $ref: ../../../api_elements.yaml#/orderStatus
+  required:
+    - orderNo
+    - orderDate
+    - operatorName
+    - customerName
+    - totalOrderPrice
+    - remainingOrderPrice
+    - orderStatus
+
+# ----+----+----+----+----+----+----+----+----+----+
+
+# TITLE:
+# 受注(GetResult)
+ReceivingWithDetail:
+  description: 受注
+  type: object
+  properties:
+    # 受注番号
+    orderNo:
+      $ref: "#/Receiving/properties/orderNo"
+    # 受注日
+    orderDate:
+      $ref: "#/Receiving/properties/orderDate"
+      description: 受注日
+    # 受注担当者氏名
+    operatorName:
+      $ref: "#/Receiving/properties/operatorName"
+      description: 受注担当者氏名
+    # 得意先名称
+    customerName:
+      $ref: "#/Receiving/properties/customerName"
+    # 受注金額
+    totalOrderPrice:
+      $ref: "#/Receiving/properties/totalOrderPrice"
+      description: 受注金額
+    # 受注残額
+    remainingOrderPrice:
+      $ref: "#/Receiving/properties/remainingOrderPrice"
+      description: 受注残額
+    # 受注ステータス
+    orderStatus:
+      $ref: "#/Receiving/properties/orderStatus"
+    # 受注明細
+    details:
+      $ref: "#/ReceivingDetailArray"
+  required:
+    - orderNo
+    - orderDate
+    - operatorName
+    - customerName
+    - totalOrderPrice
+    - remainingOrderPrice
+    - orderStatus
+    - details
+  example:
+    orderNo: RO-0000056
+    orderDate: 2024-05-26
+    operatorName: 織田信長
+    customerName: 徳川物産株式会社
+    totalOrderPrice: 230200
+    remainingOrderPrice: 111200
+    orderStatus: WORK_IN_PROGRESS
+    details:
+      - productId: P0001
+        orderQuantity: 5
+        shippingQuantity: 1
+        cancelQuantity: 0
+        remainingQuantity: 4
+        sellingPrice: 27800
+        costPrice: 19800
+        profitRate: 0.29
+        orderStatus: WORK_IN_PROGRESS
+      - productId: P0005
+        orderQuantity: 3
+        shippingQuantity: 2
+        cancelQuantity: 1
+        remainingQuantity: 0
+        sellingPrice: 45600
+        costPrice: 28700
+        profitRate: 0.37
+        orderStatus: COMPLETED
+      - productId: P0006
+        orderQuantity: 1
+        shippingQuantity: 0
+        cancelQuantity: 1
+        remainingQuantity: 0
+        sellingPrice: 100200
+        costPrice: 73800
+        profitRate: 0.26
+        orderStatus: CANCELED
+
+ReceivingDetailArray:
+  description: 受注明細
+  type: array
+  minItems: 1
+  items:
+    $ref: "#/ReceivingDetail"
+
+ReceivingDetail:
+  description: 受注明細
+  type: object
+  properties:
+    # 商品ID
+    productId:
+      $ref: ../../../api_elements.yaml#/productId
+    # 受注数
+    orderQuantity:
+      $ref: ../../../api_elements.yaml#/quantity
+      description: 受注数
+    # 出荷数
+    shippingQuantity:
+      $ref: ../../../api_elements.yaml#/quantity
+      description: 出荷数
+    # キャンセル数
+    cancelQuantity:
+      $ref: ../../../api_elements.yaml#/quantity
+      description: キャンセル数
+    # 受注数
+    remainingQuantity:
+      $ref: ../../../api_elements.yaml#/quantity
+      description: 受注残数
+    # 販売単価
+    sellingPrice:
+      $ref: ../../../api_elements.yaml#/price
+      description: 販売単価
+    # 商品原価
+    costPrice:
+      $ref: ../../../api_elements.yaml#/price
+      description: 商品原価
+    # 利益率
+    profitRate:
+      $ref: ../../../api_elements.yaml#/profitRate
+    # 受注ステータス
+    orderStatus:
+      $ref: ../../../api_elements.yaml#/orderStatus
+  required:
+    - productId
+    - orderQuantity
+    - shippingQuantity
+    - cancelQuantity
+    - remainingQuantity
+    - sellingPrice
+    - costPrice
+    - profitRate
+    - orderStatus
+
+# ----+----+----+----+----+----+----+----+----+----+
+
+# TITLE:
+# 受注(PostRequestBody)
+ReceivingPostBody:
+  description: 受注登録
+  type: object
+  properties:
+    # 受注担当者氏名
+    operatorName:
+      $ref: "#/Receiving/properties/operatorName"
+      description: 受注担当者氏名
+    # 得意先名称
+    customerName:
+      $ref: "#/Receiving/properties/customerName"
+    # 受注明細
+    details:
+      $ref: "#/ReceivingPostDetailArray"
+  required:
+    - operatorName
+    - customerName
+    - details
+
+ReceivingPostDetailArray:
+  description: 受注明細
+  type: array
+  minItems: 1
+  items:
+    $ref: "#/ReceivingPostDetail"
+  example:
+    - productId: P0022
+      orderQuantity: 3
+      sellingPrice: 34800
+    - productId: P0025
+      orderQuantity: 1
+      sellingPrice: 106400
+
+ReceivingPostDetail:
+  description: 受注明細
+  type: object
+  properties:
+    # 商品ID
+    productId:
+      $ref: "#/ReceivingDetail/properties/productId"
+    # 受注数
+    orderQuantity:
+      $ref: "#/ReceivingDetail/properties/orderQuantity"
+      description: 受注数
+    # 販売単価
+    sellingPrice:
+      $ref: "#/ReceivingDetail/properties/sellingPrice"
+      description: 販売単価
+  required:
+    - productId
+    - orderQuantity
+    - sellingPrice
+
+# ----+----+----+----+----+----+----+----+----+----+
+
+# TITLE:
+# 受注(PatchRequestBody)
+ReceivingPatchBody:
+  description: 受注変更
+  type: object
+  properties:
+    # 受注担当者氏名
+    operatorName:
+      $ref: "#/Receiving/properties/operatorName"
+      description: 受注担当者氏名
+  required:
+    - operatorName

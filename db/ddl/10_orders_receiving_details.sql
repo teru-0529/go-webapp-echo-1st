@@ -14,7 +14,7 @@ CREATE TABLE orders.receiving_details (
   sellling_price integer NOT NULL DEFAULT 0 check (0 <= sellling_price AND sellling_price <= 9999999),
   cost_price integer NOT NULL DEFAULT 0 check (0 <= cost_price AND cost_price <= 9999999),
   profit_rate numeric NOT NULL DEFAULT 0.00 check (0 <= profit_rate AND profit_rate <= 1),
-  order_status orders.order_status NOT NULL DEFAULT 'WORK_IN_PROGRESS',
+  order_status orders.order_status NOT NULL DEFAULT 'PREPARING',
   created_at timestamp NOT NULL DEFAULT current_timestamp,
   updated_at timestamp NOT NULL DEFAULT current_timestamp,
   created_by varchar(58),

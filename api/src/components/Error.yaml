@@ -1,0 +1,20 @@
+# Errorリソース
+
+type: object
+description: エラーレスポンス
+properties:
+  types:
+    $ref: ../api_elements.yaml#/urlPath
+    description: 問題タイプを識別するURI
+  title:
+    $ref: ../api_elements.yaml#/note
+    description: エラータイトル
+  detail:
+    $ref: ../api_elements.yaml#/note
+    description: エラー詳細
+required:
+  - types
+example:
+  types: /foo/bar/123
+  title: 401 Unauthorized
+  detail: APIを実行する権限を有しないユーザーです

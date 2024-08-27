@@ -1,0 +1,53 @@
+# /receivings
+
+# TITLE:
+post:
+  tags:
+    - order
+  operationId: orders.receivings.post
+  summary: 受注登録
+  description: 受注リソースを登録する。
+  parameters:
+    - $ref: ../parameters.yaml#/header/traceId
+  requestBody:
+    description: 受注(登録項目)
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../resources/Receiving.yaml#/ReceivingPostBody
+  responses:
+    201:
+      description: Create
+      headers:
+        location:
+          $ref: ../../../components/response-headers.yaml#/location
+          example: /receivings/RO-0000001
+    default:
+      $ref: ../../../components/error_response.yaml
+
+# TITLE:
+get:
+  tags:
+    - order
+  operationId: orders.receivings.get
+  summary: 受注一覧検索
+  description: 受注リソースを検索する。ソート順は受注番号の降順
+  parameters:
+    - $ref: ../../../components/parameters.yaml#/query/limit
+    - $ref: ../../../components/parameters.yaml#/query/offset
+    - $ref: ../parameters.yaml#/query/customerName
+    - $ref: ../parameters.yaml#/query/orderStatus
+    - $ref: ../parameters.yaml#/header/traceId
+  responses:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../resources/Receiving.yaml#/ReceivingArray
+      headers:
+        is_remaining:
+          $ref: ../../../components/response-headers.yaml#/remaining
+    default:
+      $ref: ../../../components/error_response.yaml

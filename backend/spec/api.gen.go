@@ -15,22 +15,22 @@ import (
 type ServerInterface interface {
 	// キャンセル指示登録
 	// (POST /cancel-instructions)
-	OrdersCancelInstructionsPost(ctx echo.Context) error
+	OrdersCancelInstructionsPost(ctx echo.Context, params OrdersCancelInstructionsPostParams) error
 	// 受注一覧検索
 	// (GET /receivings)
 	OrdersReceivingsGet(ctx echo.Context, params OrdersReceivingsGetParams) error
 	// 受注登録
 	// (POST /receivings)
-	OrdersReceivingsPost(ctx echo.Context) error
+	OrdersReceivingsPost(ctx echo.Context, params OrdersReceivingsPostParams) error
 	// 受注取得
 	// (GET /receivings/{order_no})
-	OrdersReceivingsNoGet(ctx echo.Context, orderNo OrderNo) error
+	OrdersReceivingsNoGet(ctx echo.Context, orderNo OrderNo, params OrdersReceivingsNoGetParams) error
 	// 受注修正
-	// (PATCH /receivings/{order_no})
-	OrdersReceivingsNoPatch(ctx echo.Context, orderNo OrderNo) error
+	// (PUT /receivings/{order_no}/operator)
+	OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo OrderNo, params OrdersReceivingsNoOperatorPutParams) error
 	// 出荷指示登録
 	// (POST /shipping-instructions)
-	OrdersShippingInstructionsPost(ctx echo.Context) error
+	OrdersShippingInstructionsPost(ctx echo.Context, params OrdersShippingInstructionsPostParams) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -42,8 +42,30 @@ type ServerInterfaceWrapper struct {
 func (w *ServerInterfaceWrapper) OrdersCancelInstructionsPost(ctx echo.Context) error {
 	var err error
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params OrdersCancelInstructionsPostParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "x-tarace-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
+		var XTaraceId TraceId
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+		}
+
+		params.XTaraceId = XTaraceId
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+	}
+
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.OrdersCancelInstructionsPost(ctx)
+	err = w.Handler.OrdersCancelInstructionsPost(ctx, params)
 	return err
 }
 
@@ -81,6 +103,25 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsGet(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter order_status: %s", err))
 	}
 
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "x-tarace-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
+		var XTaraceId TraceId
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+		}
+
+		params.XTaraceId = XTaraceId
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+	}
+
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.OrdersReceivingsGet(ctx, params)
 	return err
@@ -90,8 +131,30 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsGet(ctx echo.Context) error {
 func (w *ServerInterfaceWrapper) OrdersReceivingsPost(ctx echo.Context) error {
 	var err error
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params OrdersReceivingsPostParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "x-tarace-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
+		var XTaraceId TraceId
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+		}
+
+		params.XTaraceId = XTaraceId
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+	}
+
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.OrdersReceivingsPost(ctx)
+	err = w.Handler.OrdersReceivingsPost(ctx, params)
 	return err
 }
 
@@ -106,13 +169,35 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsNoGet(ctx echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter order_no: %s", err))
 	}
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params OrdersReceivingsNoGetParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "x-tarace-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
+		var XTaraceId TraceId
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+		}
+
+		params.XTaraceId = XTaraceId
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+	}
+
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.OrdersReceivingsNoGet(ctx, orderNo)
+	err = w.Handler.OrdersReceivingsNoGet(ctx, orderNo, params)
 	return err
 }
 
-// OrdersReceivingsNoPatch converts echo context to params.
-func (w *ServerInterfaceWrapper) OrdersReceivingsNoPatch(ctx echo.Context) error {
+// OrdersReceivingsNoOperatorPut converts echo context to params.
+func (w *ServerInterfaceWrapper) OrdersReceivingsNoOperatorPut(ctx echo.Context) error {
 	var err error
 	// ------------- Path parameter "order_no" -------------
 	var orderNo OrderNo
@@ -122,8 +207,30 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsNoPatch(ctx echo.Context) error
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter order_no: %s", err))
 	}
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params OrdersReceivingsNoOperatorPutParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "x-tarace-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
+		var XTaraceId TraceId
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+		}
+
+		params.XTaraceId = XTaraceId
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+	}
+
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.OrdersReceivingsNoPatch(ctx, orderNo)
+	err = w.Handler.OrdersReceivingsNoOperatorPut(ctx, orderNo, params)
 	return err
 }
 
@@ -131,8 +238,30 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsNoPatch(ctx echo.Context) error
 func (w *ServerInterfaceWrapper) OrdersShippingInstructionsPost(ctx echo.Context) error {
 	var err error
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params OrdersShippingInstructionsPostParams
+
+	headers := ctx.Request().Header
+	// ------------- Required header parameter "x-tarace-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
+		var XTaraceId TraceId
+		n := len(valueList)
+		if n != 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+		}
+
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+		}
+
+		params.XTaraceId = XTaraceId
+	} else {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+	}
+
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.OrdersShippingInstructionsPost(ctx)
+	err = w.Handler.OrdersShippingInstructionsPost(ctx, params)
 	return err
 }
 
@@ -168,7 +297,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.GET(baseURL+"/receivings", wrapper.OrdersReceivingsGet)
 	router.POST(baseURL+"/receivings", wrapper.OrdersReceivingsPost)
 	router.GET(baseURL+"/receivings/:order_no", wrapper.OrdersReceivingsNoGet)
-	router.PATCH(baseURL+"/receivings/:order_no", wrapper.OrdersReceivingsNoPatch)
+	router.PUT(baseURL+"/receivings/:order_no/operator", wrapper.OrdersReceivingsNoOperatorPut)
 	router.POST(baseURL+"/shipping-instructions", wrapper.OrdersShippingInstructionsPost)
 
 }

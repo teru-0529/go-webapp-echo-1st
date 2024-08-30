@@ -105,8 +105,8 @@ type ReceivingDetail struct {
 // ReceivingDetailArray 受注明細
 type ReceivingDetailArray = []ReceivingDetail
 
-// ReceivingPatchBody 受注変更
-type ReceivingPatchBody struct {
+// ReceivingOperatorBody 受注変更
+type ReceivingOperatorBody struct {
 	// OperatorName 担当者名称
 	OperatorName OperatorName `json:"operatorName"`
 }
@@ -216,11 +216,19 @@ type Quantity = int
 // SysDate 日付
 type SysDate = openapi_types.Date
 
+// TraceId ゲートウェイが発行する識別キー
+type TraceId = string
+
 // UrlPath パス
 type UrlPath = string
 
 // ErrorResponse エラーレスポンス
 type ErrorResponse = Error
+
+// OrdersCancelInstructionsPostParams defines parameters for OrdersCancelInstructionsPost.
+type OrdersCancelInstructionsPostParams struct {
+	XTaraceId TraceId `json:"x-tarace-id"`
+}
 
 // OrdersReceivingsGetParams defines parameters for OrdersReceivingsGet.
 type OrdersReceivingsGetParams struct {
@@ -235,6 +243,27 @@ type OrdersReceivingsGetParams struct {
 
 	// OrderStatus 【検索条件】受注ステータス
 	OrderStatus *OrderStatus `form:"order_status,omitempty" json:"order_status,omitempty"`
+	XTaraceId   TraceId      `json:"x-tarace-id"`
+}
+
+// OrdersReceivingsPostParams defines parameters for OrdersReceivingsPost.
+type OrdersReceivingsPostParams struct {
+	XTaraceId TraceId `json:"x-tarace-id"`
+}
+
+// OrdersReceivingsNoGetParams defines parameters for OrdersReceivingsNoGet.
+type OrdersReceivingsNoGetParams struct {
+	XTaraceId TraceId `json:"x-tarace-id"`
+}
+
+// OrdersReceivingsNoOperatorPutParams defines parameters for OrdersReceivingsNoOperatorPut.
+type OrdersReceivingsNoOperatorPutParams struct {
+	XTaraceId TraceId `json:"x-tarace-id"`
+}
+
+// OrdersShippingInstructionsPostParams defines parameters for OrdersShippingInstructionsPost.
+type OrdersShippingInstructionsPostParams struct {
+	XTaraceId TraceId `json:"x-tarace-id"`
 }
 
 // OrdersCancelInstructionsPostJSONRequestBody defines body for OrdersCancelInstructionsPost for application/json ContentType.
@@ -243,8 +272,8 @@ type OrdersCancelInstructionsPostJSONRequestBody = CancelInstructionBody
 // OrdersReceivingsPostJSONRequestBody defines body for OrdersReceivingsPost for application/json ContentType.
 type OrdersReceivingsPostJSONRequestBody = ReceivingPostBody
 
-// OrdersReceivingsNoPatchJSONRequestBody defines body for OrdersReceivingsNoPatch for application/json ContentType.
-type OrdersReceivingsNoPatchJSONRequestBody = ReceivingPatchBody
+// OrdersReceivingsNoOperatorPutJSONRequestBody defines body for OrdersReceivingsNoOperatorPut for application/json ContentType.
+type OrdersReceivingsNoOperatorPutJSONRequestBody = ReceivingOperatorBody
 
 // OrdersShippingInstructionsPostJSONRequestBody defines body for OrdersShippingInstructionsPost for application/json ContentType.
 type OrdersShippingInstructionsPostJSONRequestBody = ShippingInstructionBody

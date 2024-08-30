@@ -31,7 +31,7 @@ func main() {
 	e.Logger.Fatal(e.Start(":7011"))
 }
 
-// TITLE:
+// STRUCT:
 type ApiError struct {
 	Types  string `json:"types"`
 	Title  string `json:"title"`

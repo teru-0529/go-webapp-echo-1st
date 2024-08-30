@@ -12,14 +12,14 @@ import (
 	"github.com/teru-0529/go-webapp-echo-1st/spec"
 )
 
-// TITLE:
+// STRUCT:
 type ApiController struct{}
 
 // 受注登録
 // (POST /receivings)
 // FUNCTION:
-func (ac ApiController) OrdersReceivingsPost(ctx echo.Context) error {
-	traceId := ctx.Request().Header.Get("x-tarace-id")
+func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.OrdersReceivingsPostParams) error {
+	traceId := params.XTaraceId
 	receiving := spec.ReceivingPostBody{}
 	if err := ctx.Bind(&receiving); err != nil {
 		return err
@@ -39,7 +39,7 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context) error {
 // (GET /receivings)
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.OrdersReceivingsGetParams) error {
-	traceId := ctx.Request().Header.Get("x-tarace-id")
+	traceId := params.XTaraceId
 
 	// FIXME:
 	fmt.Println(traceId)
@@ -53,8 +53,8 @@ func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.Orders
 // 受注取得
 // (GET /receivings/{order_no})
 // FUNCTION:
-func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.OrderNo) error {
-	traceId := ctx.Request().Header.Get("x-tarace-id")
+func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoGetParams) error {
+	traceId := params.XTaraceId
 
 	// FIXME:
 	fmt.Println(traceId)
@@ -65,29 +65,29 @@ func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.Ord
 }
 
 // 受注修正
-// (PATCH /receivings/{order_no})
+// (PUT /receivings/{order_no}/operator)
 // FUNCTION:
-func (ac ApiController) OrdersReceivingsNoPatch(ctx echo.Context, orderNo spec.OrderNo) error {
-	traceId := ctx.Request().Header.Get("x-tarace-id")
-	receivingPatch := spec.ReceivingPatchBody{}
-	if err := ctx.Bind(&receivingPatch); err != nil {
+func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoOperatorPutParams) error {
+	traceId := params.XTaraceId
+	receivingOperator := spec.ReceivingOperatorBody{}
+	if err := ctx.Bind(&receivingOperator); err != nil {
 		return err
 	}
 
 	// FIXME:
 	fmt.Println(traceId)
 	fmt.Println(orderNo)
-	fmt.Println(receivingPatch)
+	fmt.Println(receivingOperator)
 	// FIXME:
 
-	return ctx.NoContent(http.StatusOK)
+	return ctx.NoContent(http.StatusNoContent)
 }
 
 // キャンセル指示登録
 // (POST /cancel-instructions)
 // FUNCTION:
-func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context) error {
-	traceId := ctx.Request().Header.Get("x-tarace-id")
+func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params spec.OrdersCancelInstructionsPostParams) error {
+	traceId := params.XTaraceId
 	cancelInstruction := spec.CancelInstructionBody{}
 	if err := ctx.Bind(&cancelInstruction); err != nil {
 		return err
@@ -105,8 +105,8 @@ func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context) error {
 // 出荷指示登録
 // (POST /shipping-instructions)
 // FUNCTION:
-func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context) error {
-	traceId := ctx.Request().Header.Get("x-tarace-id")
+func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context, params spec.OrdersShippingInstructionsPostParams) error {
+	traceId := params.XTaraceId
 	shippingInstruction := spec.ShippingInstructionBody{}
 	if err := ctx.Bind(&shippingInstruction); err != nil {
 		return err

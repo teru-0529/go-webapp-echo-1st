@@ -265,8 +265,8 @@ ReceivingPostDetail:
 # ----+----+----+----+----+----+----+----+----+----+
 
 # TITLE:
-# 受注(PatchRequestBody)
-ReceivingPatchBody:
+# 受注(PutRequestBody)
+ReceivingOperatorBody:
   description: 受注変更
   type: object
   properties:

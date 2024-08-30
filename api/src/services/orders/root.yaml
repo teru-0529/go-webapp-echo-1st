@@ -21,6 +21,8 @@ paths:
     $ref: ./paths/receivings.yaml
   /receivings/{order_no}:
     $ref: ./paths/receivings-no.yaml
+  /receivings/{order_no}/operator:
+    $ref: ./paths/receivings-no-operator.yaml
   /cancel-instructions:
     $ref: ./paths/cancel-instructions.yaml
   /shipping-instructions:

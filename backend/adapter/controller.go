@@ -9,6 +9,7 @@ import (
 	"path"
 
 	"github.com/labstack/echo/v4"
+	"github.com/teru-0529/go-webapp-echo-1st/command"
 	"github.com/teru-0529/go-webapp-echo-1st/spec"
 )
 
@@ -24,14 +25,15 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.Order
 	if err := ctx.Bind(&receiving); err != nil {
 		return err
 	}
+	// FIXME:repository
 
-	// FIXME:
-	fmt.Println(traceId)
-	fmt.Println(receiving)
-	orderNo := "RO-0000024"
-	// FIXME:
+	// PROCESS: コマンド実行
+	cmd := command.NewReceivingPostCommand(traceId, receiving)
+	if err := cmd.Ececute(); err != nil {
+		return err
+	}
 
-	ctx.Response().Header().Set("location", path.Join("/receivings", orderNo))
+	ctx.Response().Header().Set("location", path.Join("/receivings", cmd.OrderNo))
 	return ctx.NoContent(http.StatusCreated)
 }
 
@@ -40,14 +42,18 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.Order
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.OrdersReceivingsGetParams) error {
 	traceId := params.XTaraceId
+	qb := command.NewQueryBase(params.Limit, params.Offset)
+	qp := command.NewReceivingQueryParam(params)
+	// FIXME:repository
 
-	// FIXME:
-	fmt.Println(traceId)
-	fmt.Println(*params.CustomerName)
-	fmt.Println(*params.OrderStatus)
-	// FIXME:
+	// PROCESS: コマンド実行
+	cmd := command.NewReceivingQueryCommand(traceId, qb, qp)
+	if err := cmd.Ececute(); err != nil {
+		return err
+	}
 
-	return ctx.NoContent(http.StatusOK)
+	ctx.Response().Header().Set("is_remaining", fmt.Sprintf("%t", cmd.IsRemaining))
+	return ctx.JSON(http.StatusOK, cmd.Response)
 }
 
 // 受注取得
@@ -55,13 +61,15 @@ func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.Orders
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoGetParams) error {
 	traceId := params.XTaraceId
+	// FIXME:repository
 
-	// FIXME:
-	fmt.Println(traceId)
-	fmt.Println(orderNo)
-	// FIXME:
+	// PROCESS: コマンド実行
+	cmd := command.NewReceivingGetCommand(traceId, orderNo)
+	if err := cmd.Ececute(); err != nil {
+		return err
+	}
 
-	return ctx.NoContent(http.StatusOK)
+	return ctx.JSON(http.StatusOK, cmd.Response)
 }
 
 // 受注修正
@@ -73,12 +81,16 @@ func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo 
 	if err := ctx.Bind(&receivingOperator); err != nil {
 		return err
 	}
+	// FIXME:repository
 
-	// FIXME:
-	fmt.Println(traceId)
-	fmt.Println(orderNo)
-	fmt.Println(receivingOperator)
-	// FIXME:
+	// PROCESS: コマンド実行
+	cmd := command.NewReceivingPutOperatorCommand(traceId, orderNo, receivingOperator)
+	if err := cmd.Ececute(); err != nil {
+		return err
+	}
+
+	// FIXME:エラー処理サンプル
+	// return echo.NewHTTPError(http.StatusNotFound, "orderDetail is not found.")
 
 	return ctx.NoContent(http.StatusNoContent)
 }
@@ -92,13 +104,15 @@ func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params sp
 	if err := ctx.Bind(&cancelInstruction); err != nil {
 		return err
 	}
+	// FIXME:repository
 
-	// FIXME:
-	fmt.Println(traceId)
-	fmt.Println(cancelInstruction)
-	// FIXME:
+	// PROCESS: コマンド実行
+	cmd := command.NewCancelInstructionPostCommand(traceId, cancelInstruction)
+	if err := cmd.Ececute(); err != nil {
+		return err
+	}
 
-	ctx.Response().Header().Set("location", path.Join("/receivings", cancelInstruction.OrderNo))
+	ctx.Response().Header().Set("location", path.Join("/receivings", cmd.OrderNo))
 	return ctx.NoContent(http.StatusCreated)
 }
 
@@ -111,12 +125,14 @@ func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context, params 
 	if err := ctx.Bind(&shippingInstruction); err != nil {
 		return err
 	}
+	// FIXME:repository
 
-	// FIXME:
-	fmt.Println(traceId)
-	fmt.Println(shippingInstruction)
-	// FIXME:
+	// PROCESS: コマンド実行
+	cmd := command.NewShippingIsntructionPostCommand(traceId, shippingInstruction)
+	if err := cmd.Ececute(); err != nil {
+		return err
+	}
 
-	ctx.Response().Header().Set("location", path.Join("/receivings", shippingInstruction.OrderNo))
+	ctx.Response().Header().Set("location", path.Join("/receivings", cmd.OrderNo))
 	return ctx.NoContent(http.StatusCreated)
 }

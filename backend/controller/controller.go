@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Teruaki Sato <andrea.pirlo.0529@gmail.com>
 */
-package adapter
+package controller
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/teru-0529/go-webapp-echo-1st/command"
-	"github.com/teru-0529/go-webapp-echo-1st/spec"
+	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
 // STRUCT:

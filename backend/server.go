@@ -10,8 +10,8 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/teru-0529/go-webapp-echo-1st/adapter"
-	"github.com/teru-0529/go-webapp-echo-1st/spec"
+	"github.com/teru-0529/go-webapp-echo-1st/controller"
+	"github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
 // FUNCTION:
@@ -24,8 +24,8 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// OpenAPI の仕様を満たす構造体をハンドラーとして登録する
-	api := adapter.ApiController{}
-	spec.RegisterHandlers(e, api)
+	api := controller.ApiController{}
+	apispec.RegisterHandlers(e, api)
 
 	// validaterを実装
 	e.Validator = &CustomValidator{}

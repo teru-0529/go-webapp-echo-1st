@@ -4,7 +4,7 @@ Copyright © 2024 Teruaki Sato <andrea.pirlo.0529@gmail.com>
 package command
 
 import (
-	"github.com/teru-0529/go-webapp-echo-1st/spec"
+	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
 // STRUCT:

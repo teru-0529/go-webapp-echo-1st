@@ -6,7 +6,7 @@ package command
 import (
 	"fmt"
 
-	"github.com/teru-0529/go-webapp-echo-1st/spec"
+	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
 // STRUCT:

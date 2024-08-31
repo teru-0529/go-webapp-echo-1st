@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 Teruaki Sato <andrea.pirlo.0529@gmail.com>
 */
-package spec
+package apispec
 
 import (
 	"regexp"

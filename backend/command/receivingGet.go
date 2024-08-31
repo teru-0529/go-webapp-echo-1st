@@ -8,7 +8,7 @@ import (
 	"time"
 
 	openapi_types "github.com/oapi-codegen/runtime/types"
-	"github.com/teru-0529/go-webapp-echo-1st/spec"
+	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
 // STRUCT:

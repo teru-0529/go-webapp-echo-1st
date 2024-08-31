@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"path"
 
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/teru-0529/go-webapp-echo-1st/command"
 	"github.com/teru-0529/go-webapp-echo-1st/spec"
@@ -21,13 +22,22 @@ type ApiController struct{}
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.OrdersReceivingsPostParams) error {
 	traceId := params.XTaraceId
+
+	// PROCESS: Bodyパース/バリデーション
 	receiving := spec.ReceivingPostBody{}
 	if err := ctx.Bind(&receiving); err != nil {
 		return err
 	}
-	// FIXME:repository
+	if err := ctx.Validate(receiving); err != nil {
+		errs := err.(validation.Errors)
+		for k, err := range errs {
+			ctx.Logger().Error(k + ": " + err.Error())
+		}
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
 	// PROCESS: コマンド実行
+	// FIXME:repository
 	cmd := command.NewReceivingPostCommand(traceId, receiving)
 	if err := cmd.Ececute(); err != nil {
 		return err
@@ -42,11 +52,20 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.Order
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.OrdersReceivingsGetParams) error {
 	traceId := params.XTaraceId
+
+	// PROCESS: Queryバリデーション/整形
+	if err := ctx.Validate(params); err != nil {
+		errs := err.(validation.Errors)
+		for k, err := range errs {
+			ctx.Logger().Error(k + ": " + err.Error())
+		}
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 	qb := command.NewQueryBase(params.Limit, params.Offset)
 	qp := command.NewReceivingQueryParam(params)
-	// FIXME:repository
 
 	// PROCESS: コマンド実行
+	// FIXME:repository
 	cmd := command.NewReceivingQueryCommand(traceId, qb, qp)
 	if err := cmd.Ececute(); err != nil {
 		return err
@@ -61,9 +80,16 @@ func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.Orders
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoGetParams) error {
 	traceId := params.XTaraceId
-	// FIXME:repository
+
+	// PROCESS: Pathバリデーション
+	if err := validation.Validate(&orderNo, spec.OrderNoRule...); err != nil {
+		message := "orderNo: " + err.Error()
+		ctx.Logger().Error(message)
+		return echo.NewHTTPError(http.StatusBadRequest, message)
+	}
 
 	// PROCESS: コマンド実行
+	// FIXME:repository
 	cmd := command.NewReceivingGetCommand(traceId, orderNo)
 	if err := cmd.Ececute(); err != nil {
 		return err
@@ -77,20 +103,33 @@ func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.Ord
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoOperatorPutParams) error {
 	traceId := params.XTaraceId
+
+	// PROCESS: Pathバリデーション
+	if err := validation.Validate(&orderNo, spec.OrderNoRule...); err != nil {
+		message := "orderNo: " + err.Error()
+		ctx.Logger().Error(message)
+		return echo.NewHTTPError(http.StatusBadRequest, message)
+	}
+
+	// PROCESS: Bodyパース/バリデーション
 	receivingOperator := spec.ReceivingOperatorBody{}
 	if err := ctx.Bind(&receivingOperator); err != nil {
 		return err
 	}
-	// FIXME:repository
+	if err := ctx.Validate(receivingOperator); err != nil {
+		errs := err.(validation.Errors)
+		for k, err := range errs {
+			ctx.Logger().Error(k + ": " + err.Error())
+		}
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
 	// PROCESS: コマンド実行
+	// FIXME:repository
 	cmd := command.NewReceivingPutOperatorCommand(traceId, orderNo, receivingOperator)
 	if err := cmd.Ececute(); err != nil {
 		return err
 	}
-
-	// FIXME:エラー処理サンプル
-	// return echo.NewHTTPError(http.StatusNotFound, "orderDetail is not found.")
 
 	return ctx.NoContent(http.StatusNoContent)
 }
@@ -100,13 +139,22 @@ func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo 
 // FUNCTION:
 func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params spec.OrdersCancelInstructionsPostParams) error {
 	traceId := params.XTaraceId
+
+	// PROCESS: Bodyパース/バリデーション
 	cancelInstruction := spec.CancelInstructionBody{}
 	if err := ctx.Bind(&cancelInstruction); err != nil {
 		return err
 	}
-	// FIXME:repository
+	if err := ctx.Validate(cancelInstruction); err != nil {
+		errs := err.(validation.Errors)
+		for k, err := range errs {
+			ctx.Logger().Error(k + ": " + err.Error())
+		}
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
 	// PROCESS: コマンド実行
+	// FIXME:repository
 	cmd := command.NewCancelInstructionPostCommand(traceId, cancelInstruction)
 	if err := cmd.Ececute(); err != nil {
 		return err
@@ -121,13 +169,22 @@ func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params sp
 // FUNCTION:
 func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context, params spec.OrdersShippingInstructionsPostParams) error {
 	traceId := params.XTaraceId
+
+	// PROCESS: Bodyパース/バリデーション
 	shippingInstruction := spec.ShippingInstructionBody{}
 	if err := ctx.Bind(&shippingInstruction); err != nil {
 		return err
 	}
-	// FIXME:repository
+	if err := ctx.Validate(shippingInstruction); err != nil {
+		errs := err.(validation.Errors)
+		for k, err := range errs {
+			ctx.Logger().Error(k + ": " + err.Error())
+		}
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
 
 	// PROCESS: コマンド実行
+	// FIXME:repository
 	cmd := command.NewShippingIsntructionPostCommand(traceId, shippingInstruction)
 	if err := cmd.Ececute(); err != nil {
 		return err

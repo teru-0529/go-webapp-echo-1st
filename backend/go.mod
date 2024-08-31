@@ -4,6 +4,7 @@ go 1.23.0
 
 require (
 	github.com/getkin/kin-openapi v0.127.0
+	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/oapi-codegen/runtime v1.1.1
 )

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/teru-0529/go-webapp-echo-1st/adapter"
@@ -26,6 +27,10 @@ func main() {
 	api := adapter.ApiController{}
 	spec.RegisterHandlers(e, api)
 
+	// validaterを実装
+	e.Validator = &CustomValidator{}
+
+	// エラー応答のカスタマイズ
 	e.HTTPErrorHandler = CustomHTTPErrorHandler
 
 	e.Logger.Fatal(e.Start(":7011"))
@@ -53,4 +58,15 @@ func CustomHTTPErrorHandler(err error, c echo.Context) {
 		Detail: message,
 	}
 	c.JSON(code, body)
+}
+
+// STRUCT:
+type CustomValidator struct{}
+
+// FUNCTION:
+func (cv *CustomValidator) Validate(i interface{}) error {
+	if c, ok := i.(validation.Validatable); ok {
+		return c.Validate()
+	}
+	return nil
 }

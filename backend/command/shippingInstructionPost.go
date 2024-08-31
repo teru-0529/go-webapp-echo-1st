@@ -24,6 +24,12 @@ func NewShippingIsntructionPostCommand(traceId spec.TraceId, body spec.ShippingI
 // FUNCTION:
 func (cmd *ShippingIsntructionPostCommand) Ececute() error {
 
+	// PROCESS:
+	// 存在チェック(受注明細)
+
+	// PROCESS:
+	// 登録
+
 	// FIXME:
 	fmt.Println(cmd.traceId)
 	fmt.Println(cmd.body)

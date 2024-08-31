@@ -26,6 +26,9 @@ func NewReceivingGetCommand(traceId spec.TraceId, orderNo spec.OrderNo) Receivin
 // FUNCTION:
 func (cmd *ReceivingGetCommand) Ececute() error {
 
+	// PROCESS:
+	// 取得(受注)
+
 	// FIXME:
 	fmt.Println(cmd.traceId)
 	fmt.Println(cmd.orderNo)

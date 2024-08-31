@@ -32,3 +32,5 @@ echoを使ったAPIサーバー
 * [echo corsのオリジンをHttp Request から取得する](https://shikatech.hatenablog.com/entry/2021/10/17/104810)
 * [Golang echoフレームワークでのレスポンスヘッダのセット方法](https://qiita.com/naoki_koreeda/items/df7d42021406ad2e8ddd)
 * [Echo のエラーレスポンスのカスタマイズ](https://qiita.com/naoki_koreeda/items/df7d42021406ad2e8ddd)
+* [Go言語のバリデーションチェックライブラリ(ozzo-validation)を分かりやすくまとめてみた](https://qiita.com/gold-kou/items/201a19d9d0c760cc2104)
+* [Go の入力バリデーションパッケージ ozzo-validation を試した。](https://zenn.dev/mattn/articles/893f28eff96129)

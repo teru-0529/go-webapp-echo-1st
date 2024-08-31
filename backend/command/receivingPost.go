@@ -24,6 +24,12 @@ func NewReceivingPostCommand(traceId spec.TraceId, body spec.ReceivingPostBody) 
 // FUNCTION:
 func (cmd *ReceivingPostCommand) Ececute() error {
 
+	// PROCESS:
+	// 存在チェック(商品)
+
+	// PROCESS:
+	// 登録
+
 	// FIXME:
 	fmt.Println(cmd.traceId)
 	fmt.Println(cmd.body)

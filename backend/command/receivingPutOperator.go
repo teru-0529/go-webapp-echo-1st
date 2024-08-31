@@ -24,6 +24,12 @@ func NewReceivingPutOperatorCommand(traceId spec.TraceId, orderNo spec.OrderNo, 
 // FUNCTION:
 func (cmd *ReceivingPutOperatorCommand) Ececute() error {
 
+	// PROCESS:
+	// 取得(受注)
+
+	// PROCESS:
+	// 更新
+
 	// FIXME:
 	fmt.Println(cmd.traceId)
 	fmt.Println(cmd.orderNo)

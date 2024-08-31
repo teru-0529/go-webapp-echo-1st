@@ -42,6 +42,9 @@ func NewReceivingQueryCommand(traceId spec.TraceId, queryBase QueryBase, queryPa
 // FUNCTION:
 func (cmd *ReceivingQueryCommand) Ececute() error {
 
+	// PROCESS:
+	// 取得(受注)
+
 	// FIXME:
 	fmt.Println(cmd.traceId)
 	fmt.Println(cmd.queryBase)

@@ -11,14 +11,14 @@ import (
 
 // STRUCT:
 type CancelInstructionPostCommand struct {
-	traceId spec.TraceId
-	body    spec.CancelInstructionBody
-	OrderNo spec.OrderNo
+	accountId spec.AccountId
+	body      spec.CancelInstructionBody
+	OrderNo   spec.OrderNo
 }
 
 // FUNCTION:
-func NewCancelInstructionPostCommand(traceId spec.TraceId, body spec.CancelInstructionBody) CancelInstructionPostCommand {
-	return CancelInstructionPostCommand{traceId: traceId, body: body}
+func NewCancelInstructionPostCommand(accountId spec.AccountId, body spec.CancelInstructionBody) CancelInstructionPostCommand {
+	return CancelInstructionPostCommand{accountId: accountId, body: body}
 }
 
 // FUNCTION:
@@ -31,7 +31,7 @@ func (cmd *CancelInstructionPostCommand) Ececute() error {
 	// 登録
 
 	// FIXME:
-	fmt.Println(cmd.traceId)
+	fmt.Println(cmd.accountId)
 	fmt.Println(cmd.body)
 	cmd.OrderNo = cmd.body.OrderNo
 	// FIXME:

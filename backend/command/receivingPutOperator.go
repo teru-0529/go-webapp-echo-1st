@@ -11,14 +11,14 @@ import (
 
 // STRUCT:
 type ReceivingPutOperatorCommand struct {
-	traceId spec.TraceId
-	orderNo spec.OrderNo
-	body    spec.ReceivingOperatorBody
+	accountId spec.AccountId
+	orderNo   spec.OrderNo
+	body      spec.ReceivingOperatorBody
 }
 
 // FUNCTION:
-func NewReceivingPutOperatorCommand(traceId spec.TraceId, orderNo spec.OrderNo, body spec.ReceivingOperatorBody) ReceivingPutOperatorCommand {
-	return ReceivingPutOperatorCommand{traceId: traceId, orderNo: orderNo, body: body}
+func NewReceivingPutOperatorCommand(accountId spec.AccountId, orderNo spec.OrderNo, body spec.ReceivingOperatorBody) ReceivingPutOperatorCommand {
+	return ReceivingPutOperatorCommand{accountId: accountId, orderNo: orderNo, body: body}
 }
 
 // FUNCTION:
@@ -31,7 +31,7 @@ func (cmd *ReceivingPutOperatorCommand) Ececute() error {
 	// 更新
 
 	// FIXME:
-	fmt.Println(cmd.traceId)
+	fmt.Println(cmd.accountId)
 	fmt.Println(cmd.orderNo)
 	fmt.Println(cmd.body)
 	// FIXME:

@@ -127,3 +127,10 @@ traceId:
   description: ゲートウェイが発行する識別キー
   example: 1000::P0673822
 
+# アカウントID
+accountId:
+  type: string
+  maxLength: 30
+  description: サインインした際のアカウントID
+  example: P0673822
+

@@ -8,7 +8,7 @@ post:
   summary: 受注登録
   description: 受注リソースを登録する。
   parameters:
-    - $ref: ../parameters.yaml#/header/traceId
+    - $ref: ../../../components/parameters.yaml#/header/accountId
   requestBody:
     description: 受注(登録項目)
     required: true
@@ -34,11 +34,11 @@ get:
   summary: 受注一覧検索
   description: 受注リソースを検索する。ソート順は受注番号の降順
   parameters:
+    - $ref: ../../../components/parameters.yaml#/header/accountId
     - $ref: ../../../components/parameters.yaml#/query/limit
     - $ref: ../../../components/parameters.yaml#/query/offset
     - $ref: ../parameters.yaml#/query/customerName
     - $ref: ../parameters.yaml#/query/orderStatus
-    - $ref: ../parameters.yaml#/header/traceId
   responses:
     200:
       description: OK

@@ -20,3 +20,12 @@ query:
       $ref: ../api_elements.yaml#/offset
     description: 検索オフセット値(デフォルト値は0)
     example: 20
+
+header:
+  # アカウントID
+  accountId:
+    name: x-account-id
+    in: header
+    required: true
+    schema:
+      $ref: ../api_elements.yaml#/accountId

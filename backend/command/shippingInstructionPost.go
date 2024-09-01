@@ -11,14 +11,14 @@ import (
 
 // STRUCT:
 type ShippingIsntructionPostCommand struct {
-	traceId spec.TraceId
-	body    spec.ShippingInstructionBody
-	OrderNo spec.OrderNo
+	accountId spec.AccountId
+	body      spec.ShippingInstructionBody
+	OrderNo   spec.OrderNo
 }
 
 // FUNCTION:
-func NewShippingIsntructionPostCommand(traceId spec.TraceId, body spec.ShippingInstructionBody) ShippingIsntructionPostCommand {
-	return ShippingIsntructionPostCommand{traceId: traceId, body: body}
+func NewShippingIsntructionPostCommand(accountId spec.AccountId, body spec.ShippingInstructionBody) ShippingIsntructionPostCommand {
+	return ShippingIsntructionPostCommand{accountId: accountId, body: body}
 }
 
 // FUNCTION:
@@ -31,7 +31,7 @@ func (cmd *ShippingIsntructionPostCommand) Ececute() error {
 	// 登録
 
 	// FIXME:
-	fmt.Println(cmd.traceId)
+	fmt.Println(cmd.accountId)
 	fmt.Println(cmd.body)
 	cmd.OrderNo = cmd.body.OrderNo
 	// FIXME:

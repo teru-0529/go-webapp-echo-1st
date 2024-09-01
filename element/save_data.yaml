@@ -1,6 +1,6 @@
 data_type: define_elements
 version: 3.0.22
-create_at: 2024-08-26T22:28:10+09:00
+create_at: 2024-09-01T09:46:05+09:00
 elements:
   - name_jp: 受注番号
     name_en: orderNo
@@ -172,6 +172,16 @@ elements:
     max_value: null
     example: 1000::P0673822
     description: ゲートウェイが発行する識別キー
+  - name_jp: アカウントID
+    name_en: accountId
+    domain: 文字列
+    reg_ex: null
+    min_digits: null
+    max_digits: 30
+    min_value: null
+    max_value: null
+    example: P0673822
+    description: サインインした際のアカウントID
 delive_elements:
   - origin: 日付
     name_jp: 受注日

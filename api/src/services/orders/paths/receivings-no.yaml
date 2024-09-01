@@ -8,8 +8,8 @@ get:
   summary: 受注取得
   description: 受注番号を指定して、受注リソースを取得する。
   parameters:
+    - $ref: ../../../components/parameters.yaml#/header/accountId
     - $ref: ../parameters.yaml#/path/orderNo
-    - $ref: ../parameters.yaml#/header/traceId
   responses:
     200:
       description: OK

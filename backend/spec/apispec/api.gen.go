@@ -46,22 +46,22 @@ func (w *ServerInterfaceWrapper) OrdersCancelInstructionsPost(ctx echo.Context) 
 	var params OrdersCancelInstructionsPostParams
 
 	headers := ctx.Request().Header
-	// ------------- Required header parameter "x-tarace-id" -------------
-	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
-		var XTaraceId TraceId
+	// ------------- Required header parameter "x-account-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-account-id")]; found {
+		var XAccountId AccountId
 		n := len(valueList)
 		if n != 1 {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-account-id, got %d", n))
 		}
 
-		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-account-id", runtime.ParamLocationHeader, valueList[0], &XAccountId)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-account-id: %s", err))
 		}
 
-		params.XTaraceId = XTaraceId
+		params.XAccountId = XAccountId
 	} else {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-account-id is required, but not found"))
 	}
 
 	// Invoke the callback with all the unmarshaled arguments
@@ -104,22 +104,22 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsGet(ctx echo.Context) error {
 	}
 
 	headers := ctx.Request().Header
-	// ------------- Required header parameter "x-tarace-id" -------------
-	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
-		var XTaraceId TraceId
+	// ------------- Required header parameter "x-account-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-account-id")]; found {
+		var XAccountId AccountId
 		n := len(valueList)
 		if n != 1 {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-account-id, got %d", n))
 		}
 
-		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-account-id", runtime.ParamLocationHeader, valueList[0], &XAccountId)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-account-id: %s", err))
 		}
 
-		params.XTaraceId = XTaraceId
+		params.XAccountId = XAccountId
 	} else {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-account-id is required, but not found"))
 	}
 
 	// Invoke the callback with all the unmarshaled arguments
@@ -135,22 +135,22 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsPost(ctx echo.Context) error {
 	var params OrdersReceivingsPostParams
 
 	headers := ctx.Request().Header
-	// ------------- Required header parameter "x-tarace-id" -------------
-	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
-		var XTaraceId TraceId
+	// ------------- Required header parameter "x-account-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-account-id")]; found {
+		var XAccountId AccountId
 		n := len(valueList)
 		if n != 1 {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-account-id, got %d", n))
 		}
 
-		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-account-id", runtime.ParamLocationHeader, valueList[0], &XAccountId)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-account-id: %s", err))
 		}
 
-		params.XTaraceId = XTaraceId
+		params.XAccountId = XAccountId
 	} else {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-account-id is required, but not found"))
 	}
 
 	// Invoke the callback with all the unmarshaled arguments
@@ -173,22 +173,22 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsNoGet(ctx echo.Context) error {
 	var params OrdersReceivingsNoGetParams
 
 	headers := ctx.Request().Header
-	// ------------- Required header parameter "x-tarace-id" -------------
-	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
-		var XTaraceId TraceId
+	// ------------- Required header parameter "x-account-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-account-id")]; found {
+		var XAccountId AccountId
 		n := len(valueList)
 		if n != 1 {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-account-id, got %d", n))
 		}
 
-		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-account-id", runtime.ParamLocationHeader, valueList[0], &XAccountId)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-account-id: %s", err))
 		}
 
-		params.XTaraceId = XTaraceId
+		params.XAccountId = XAccountId
 	} else {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-account-id is required, but not found"))
 	}
 
 	// Invoke the callback with all the unmarshaled arguments
@@ -211,22 +211,22 @@ func (w *ServerInterfaceWrapper) OrdersReceivingsNoOperatorPut(ctx echo.Context)
 	var params OrdersReceivingsNoOperatorPutParams
 
 	headers := ctx.Request().Header
-	// ------------- Required header parameter "x-tarace-id" -------------
-	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
-		var XTaraceId TraceId
+	// ------------- Required header parameter "x-account-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-account-id")]; found {
+		var XAccountId AccountId
 		n := len(valueList)
 		if n != 1 {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-account-id, got %d", n))
 		}
 
-		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-account-id", runtime.ParamLocationHeader, valueList[0], &XAccountId)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-account-id: %s", err))
 		}
 
-		params.XTaraceId = XTaraceId
+		params.XAccountId = XAccountId
 	} else {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-account-id is required, but not found"))
 	}
 
 	// Invoke the callback with all the unmarshaled arguments
@@ -242,22 +242,22 @@ func (w *ServerInterfaceWrapper) OrdersShippingInstructionsPost(ctx echo.Context
 	var params OrdersShippingInstructionsPostParams
 
 	headers := ctx.Request().Header
-	// ------------- Required header parameter "x-tarace-id" -------------
-	if valueList, found := headers[http.CanonicalHeaderKey("x-tarace-id")]; found {
-		var XTaraceId TraceId
+	// ------------- Required header parameter "x-account-id" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("x-account-id")]; found {
+		var XAccountId AccountId
 		n := len(valueList)
 		if n != 1 {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-tarace-id, got %d", n))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Expected one value for x-account-id, got %d", n))
 		}
 
-		err = runtime.BindStyledParameterWithLocation("simple", false, "x-tarace-id", runtime.ParamLocationHeader, valueList[0], &XTaraceId)
+		err = runtime.BindStyledParameterWithLocation("simple", false, "x-account-id", runtime.ParamLocationHeader, valueList[0], &XAccountId)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-tarace-id: %s", err))
+			return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter x-account-id: %s", err))
 		}
 
-		params.XTaraceId = XTaraceId
+		params.XAccountId = XAccountId
 	} else {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-tarace-id is required, but not found"))
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Header parameter x-account-id is required, but not found"))
 	}
 
 	// Invoke the callback with all the unmarshaled arguments

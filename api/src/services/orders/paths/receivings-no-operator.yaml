@@ -8,8 +8,8 @@ put:
   summary: 受注修正
   description: 受注番号を指定して、受注リソースを修正する。
   parameters:
+    - $ref: ../../../components/parameters.yaml#/header/accountId
     - $ref: ../parameters.yaml#/path/orderNo
-    - $ref: ../parameters.yaml#/header/traceId
   requestBody:
     description: 受注(修正項目)
     required: true

@@ -180,6 +180,9 @@ type ShippingInstructionBody struct {
 	Quantity Quantity `json:"quantity"`
 }
 
+// AccountId サインインした際のアカウントID
+type AccountId = string
+
 // CustomerName 受注先企業名
 type CustomerName = string
 
@@ -216,9 +219,6 @@ type Quantity = int
 // SysDate 日付
 type SysDate = openapi_types.Date
 
-// TraceId ゲートウェイが発行する識別キー
-type TraceId = string
-
 // UrlPath パス
 type UrlPath = string
 
@@ -227,7 +227,7 @@ type ErrorResponse = Error
 
 // OrdersCancelInstructionsPostParams defines parameters for OrdersCancelInstructionsPost.
 type OrdersCancelInstructionsPostParams struct {
-	XTaraceId TraceId `json:"x-tarace-id"`
+	XAccountId AccountId `json:"x-account-id"`
 }
 
 // OrdersReceivingsGetParams defines parameters for OrdersReceivingsGet.
@@ -243,27 +243,27 @@ type OrdersReceivingsGetParams struct {
 
 	// OrderStatus 【検索条件】受注ステータス
 	OrderStatus *OrderStatus `form:"order_status,omitempty" json:"order_status,omitempty"`
-	XTaraceId   TraceId      `json:"x-tarace-id"`
+	XAccountId  AccountId    `json:"x-account-id"`
 }
 
 // OrdersReceivingsPostParams defines parameters for OrdersReceivingsPost.
 type OrdersReceivingsPostParams struct {
-	XTaraceId TraceId `json:"x-tarace-id"`
+	XAccountId AccountId `json:"x-account-id"`
 }
 
 // OrdersReceivingsNoGetParams defines parameters for OrdersReceivingsNoGet.
 type OrdersReceivingsNoGetParams struct {
-	XTaraceId TraceId `json:"x-tarace-id"`
+	XAccountId AccountId `json:"x-account-id"`
 }
 
 // OrdersReceivingsNoOperatorPutParams defines parameters for OrdersReceivingsNoOperatorPut.
 type OrdersReceivingsNoOperatorPutParams struct {
-	XTaraceId TraceId `json:"x-tarace-id"`
+	XAccountId AccountId `json:"x-account-id"`
 }
 
 // OrdersShippingInstructionsPostParams defines parameters for OrdersShippingInstructionsPost.
 type OrdersShippingInstructionsPostParams struct {
-	XTaraceId TraceId `json:"x-tarace-id"`
+	XAccountId AccountId `json:"x-account-id"`
 }
 
 // OrdersCancelInstructionsPostJSONRequestBody defines body for OrdersCancelInstructionsPost for application/json ContentType.

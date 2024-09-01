@@ -27,7 +27,7 @@ func NewReceivingQueryParam(params spec.OrdersReceivingsGetParams) ReceivingQuer
 
 // STRUCT:
 type ReceivingQueryCommand struct {
-	traceId     spec.TraceId
+	accountId   spec.AccountId
 	queryBase   QueryBase
 	queryParam  ReceivingQueryParam
 	Response    spec.ReceivingArray
@@ -35,8 +35,8 @@ type ReceivingQueryCommand struct {
 }
 
 // FUNCTION:
-func NewReceivingQueryCommand(traceId spec.TraceId, queryBase QueryBase, queryParam ReceivingQueryParam) ReceivingQueryCommand {
-	return ReceivingQueryCommand{traceId: traceId, queryBase: queryBase, queryParam: queryParam}
+func NewReceivingQueryCommand(accountId spec.AccountId, queryBase QueryBase, queryParam ReceivingQueryParam) ReceivingQueryCommand {
+	return ReceivingQueryCommand{accountId: accountId, queryBase: queryBase, queryParam: queryParam}
 }
 
 // FUNCTION:
@@ -46,7 +46,7 @@ func (cmd *ReceivingQueryCommand) Ececute() error {
 	// 取得(受注)
 
 	// FIXME:
-	fmt.Println(cmd.traceId)
+	fmt.Println(cmd.accountId)
 	fmt.Println(cmd.queryBase)
 	fmt.Println(*cmd.queryParam.customerName)
 	fmt.Println(*cmd.queryParam.orderStatus)

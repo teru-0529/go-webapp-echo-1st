@@ -13,14 +13,14 @@ import (
 
 // STRUCT:
 type ReceivingGetCommand struct {
-	traceId  spec.TraceId
-	orderNo  spec.OrderNo
-	Response *spec.ReceivingWithDetail
+	accountId spec.AccountId
+	orderNo   spec.OrderNo
+	Response  *spec.ReceivingWithDetail
 }
 
 // FUNCTION:
-func NewReceivingGetCommand(traceId spec.TraceId, orderNo spec.OrderNo) ReceivingGetCommand {
-	return ReceivingGetCommand{traceId: traceId, orderNo: orderNo}
+func NewReceivingGetCommand(accountId spec.AccountId, orderNo spec.OrderNo) ReceivingGetCommand {
+	return ReceivingGetCommand{accountId: accountId, orderNo: orderNo}
 }
 
 // FUNCTION:
@@ -30,7 +30,7 @@ func (cmd *ReceivingGetCommand) Ececute() error {
 	// 取得(受注)
 
 	// FIXME:
-	fmt.Println(cmd.traceId)
+	fmt.Println(cmd.accountId)
 	fmt.Println(cmd.orderNo)
 
 	const layout = "2006-01-02"

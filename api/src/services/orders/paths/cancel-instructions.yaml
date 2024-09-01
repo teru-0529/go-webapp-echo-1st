@@ -8,7 +8,7 @@ post:
   summary: キャンセル指示登録
   description: 受注残の存在する受注明細を指定してキャンセル指示を登録する。
   parameters:
-    - $ref: ../parameters.yaml#/header/traceId
+    - $ref: ../../../components/parameters.yaml#/header/accountId
   requestBody:
     description: キャンセル指示
     required: true

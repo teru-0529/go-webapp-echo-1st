@@ -8,7 +8,7 @@ post:
   summary: 出荷指示登録
   description: 受注残の存在する受注明細を指定して出荷指示を登録する。
   parameters:
-    - $ref: ../parameters.yaml#/header/traceId
+    - $ref: ../../../components/parameters.yaml#/header/accountId
   requestBody:
     description: 出荷指示
     required: true

@@ -11,6 +11,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/teru-0529/go-webapp-echo-1st/command"
+	"github.com/teru-0529/go-webapp-echo-1st/infra"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
@@ -21,7 +22,8 @@ type ApiController struct{}
 // (POST /receivings)
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.OrdersReceivingsPostParams) error {
-	accountId := params.XAccountId
+	// PROCESS: アプリコンテキスト
+	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
 
 	// PROCESS: Bodyパース/バリデーション
 	receiving := spec.ReceivingPostBody{}
@@ -38,7 +40,7 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.Order
 
 	// PROCESS: コマンド実行
 	// FIXME:repository
-	cmd := command.NewReceivingPostCommand(accountId, receiving)
+	cmd := command.NewReceivingPostCommand(apCtx, receiving)
 	if err := cmd.Ececute(); err != nil {
 		return err
 	}
@@ -51,7 +53,8 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.Order
 // (GET /receivings)
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.OrdersReceivingsGetParams) error {
-	accountId := params.XAccountId
+	// PROCESS: アプリコンテキスト
+	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
 
 	// PROCESS: Queryバリデーション/整形
 	if err := ctx.Validate(params); err != nil {
@@ -66,7 +69,7 @@ func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.Orders
 
 	// PROCESS: コマンド実行
 	// FIXME:repository
-	cmd := command.NewReceivingQueryCommand(accountId, qb, qp)
+	cmd := command.NewReceivingQueryCommand(apCtx, qb, qp)
 	if err := cmd.Ececute(); err != nil {
 		return err
 	}
@@ -79,7 +82,8 @@ func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.Orders
 // (GET /receivings/{order_no})
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoGetParams) error {
-	accountId := params.XAccountId
+	// PROCESS: アプリコンテキスト
+	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
 
 	// PROCESS: Pathバリデーション
 	if err := validation.Validate(&orderNo, spec.OrderNoRule...); err != nil {
@@ -90,7 +94,7 @@ func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.Ord
 
 	// PROCESS: コマンド実行
 	// FIXME:repository
-	cmd := command.NewReceivingGetCommand(accountId, orderNo)
+	cmd := command.NewReceivingGetCommand(apCtx, orderNo)
 	if err := cmd.Ececute(); err != nil {
 		return err
 	}
@@ -102,7 +106,8 @@ func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.Ord
 // (PUT /receivings/{order_no}/operator)
 // FUNCTION:
 func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoOperatorPutParams) error {
-	accountId := params.XAccountId
+	// PROCESS: アプリコンテキスト
+	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
 
 	// PROCESS: Pathバリデーション
 	if err := validation.Validate(&orderNo, spec.OrderNoRule...); err != nil {
@@ -126,7 +131,7 @@ func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo 
 
 	// PROCESS: コマンド実行
 	// FIXME:repository
-	cmd := command.NewReceivingPutOperatorCommand(accountId, orderNo, receivingOperator)
+	cmd := command.NewReceivingPutOperatorCommand(apCtx, orderNo, receivingOperator)
 	if err := cmd.Ececute(); err != nil {
 		return err
 	}
@@ -138,7 +143,8 @@ func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo 
 // (POST /cancel-instructions)
 // FUNCTION:
 func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params spec.OrdersCancelInstructionsPostParams) error {
-	accountId := params.XAccountId
+	// PROCESS: アプリコンテキスト
+	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
 
 	// PROCESS: Bodyパース/バリデーション
 	cancelInstruction := spec.CancelInstructionBody{}
@@ -155,7 +161,7 @@ func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params sp
 
 	// PROCESS: コマンド実行
 	// FIXME:repository
-	cmd := command.NewCancelInstructionPostCommand(accountId, cancelInstruction)
+	cmd := command.NewCancelInstructionPostCommand(apCtx, cancelInstruction)
 	if err := cmd.Ececute(); err != nil {
 		return err
 	}
@@ -168,7 +174,8 @@ func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params sp
 // (POST /shipping-instructions)
 // FUNCTION:
 func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context, params spec.OrdersShippingInstructionsPostParams) error {
-	accountId := params.XAccountId
+	// PROCESS: アプリコンテキスト
+	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
 
 	// PROCESS: Bodyパース/バリデーション
 	shippingInstruction := spec.ShippingInstructionBody{}
@@ -185,7 +192,7 @@ func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context, params 
 
 	// PROCESS: コマンド実行
 	// FIXME:repository
-	cmd := command.NewShippingIsntructionPostCommand(accountId, shippingInstruction)
+	cmd := command.NewShippingIsntructionPostCommand(apCtx, shippingInstruction)
 	if err := cmd.Ececute(); err != nil {
 		return err
 	}

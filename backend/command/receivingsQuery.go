@@ -4,10 +4,12 @@ Copyright © 2024 Teruaki Sato <andrea.pirlo.0529@gmail.com>
 package command
 
 import (
+	"context"
 	"fmt"
 	"time"
 
 	openapi_types "github.com/oapi-codegen/runtime/types"
+	"github.com/teru-0529/go-webapp-echo-1st/infra"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
@@ -27,7 +29,7 @@ func NewReceivingQueryParam(params spec.OrdersReceivingsGetParams) ReceivingQuer
 
 // STRUCT:
 type ReceivingQueryCommand struct {
-	accountId   spec.AccountId
+	ctx         context.Context
 	queryBase   QueryBase
 	queryParam  ReceivingQueryParam
 	Response    spec.ReceivingArray
@@ -35,8 +37,8 @@ type ReceivingQueryCommand struct {
 }
 
 // FUNCTION:
-func NewReceivingQueryCommand(accountId spec.AccountId, queryBase QueryBase, queryParam ReceivingQueryParam) ReceivingQueryCommand {
-	return ReceivingQueryCommand{accountId: accountId, queryBase: queryBase, queryParam: queryParam}
+func NewReceivingQueryCommand(ctx context.Context, queryBase QueryBase, queryParam ReceivingQueryParam) ReceivingQueryCommand {
+	return ReceivingQueryCommand{ctx: ctx, queryBase: queryBase, queryParam: queryParam}
 }
 
 // FUNCTION:
@@ -46,7 +48,7 @@ func (cmd *ReceivingQueryCommand) Ececute() error {
 	// 取得(受注)
 
 	// FIXME:
-	fmt.Println(cmd.accountId)
+	fmt.Println(infra.TraceId(cmd.ctx))
 	fmt.Println(cmd.queryBase)
 	fmt.Println(*cmd.queryParam.customerName)
 	fmt.Println(*cmd.queryParam.orderStatus)

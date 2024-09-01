@@ -4,23 +4,25 @@ Copyright © 2024 Teruaki Sato <andrea.pirlo.0529@gmail.com>
 package command
 
 import (
+	"context"
 	"fmt"
 	"time"
 
 	openapi_types "github.com/oapi-codegen/runtime/types"
+	"github.com/teru-0529/go-webapp-echo-1st/infra"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
 // STRUCT:
 type ReceivingGetCommand struct {
-	accountId spec.AccountId
-	orderNo   spec.OrderNo
-	Response  *spec.ReceivingWithDetail
+	ctx      context.Context
+	orderNo  spec.OrderNo
+	Response *spec.ReceivingWithDetail
 }
 
 // FUNCTION:
-func NewReceivingGetCommand(accountId spec.AccountId, orderNo spec.OrderNo) ReceivingGetCommand {
-	return ReceivingGetCommand{accountId: accountId, orderNo: orderNo}
+func NewReceivingGetCommand(ctx context.Context, orderNo spec.OrderNo) ReceivingGetCommand {
+	return ReceivingGetCommand{ctx: ctx, orderNo: orderNo}
 }
 
 // FUNCTION:
@@ -30,7 +32,7 @@ func (cmd *ReceivingGetCommand) Ececute() error {
 	// 取得(受注)
 
 	// FIXME:
-	fmt.Println(cmd.accountId)
+	fmt.Println(infra.TraceId(cmd.ctx))
 	fmt.Println(cmd.orderNo)
 
 	const layout = "2006-01-02"

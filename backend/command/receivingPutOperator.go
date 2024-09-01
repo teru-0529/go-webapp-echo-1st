@@ -4,21 +4,23 @@ Copyright © 2024 Teruaki Sato <andrea.pirlo.0529@gmail.com>
 package command
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/teru-0529/go-webapp-echo-1st/infra"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
 // STRUCT:
 type ReceivingPutOperatorCommand struct {
-	accountId spec.AccountId
-	orderNo   spec.OrderNo
-	body      spec.ReceivingOperatorBody
+	ctx     context.Context
+	orderNo spec.OrderNo
+	body    spec.ReceivingOperatorBody
 }
 
 // FUNCTION:
-func NewReceivingPutOperatorCommand(accountId spec.AccountId, orderNo spec.OrderNo, body spec.ReceivingOperatorBody) ReceivingPutOperatorCommand {
-	return ReceivingPutOperatorCommand{accountId: accountId, orderNo: orderNo, body: body}
+func NewReceivingPutOperatorCommand(ctx context.Context, orderNo spec.OrderNo, body spec.ReceivingOperatorBody) ReceivingPutOperatorCommand {
+	return ReceivingPutOperatorCommand{ctx: ctx, orderNo: orderNo, body: body}
 }
 
 // FUNCTION:
@@ -31,7 +33,7 @@ func (cmd *ReceivingPutOperatorCommand) Ececute() error {
 	// 更新
 
 	// FIXME:
-	fmt.Println(cmd.accountId)
+	fmt.Println(infra.TraceId(cmd.ctx))
 	fmt.Println(cmd.orderNo)
 	fmt.Println(cmd.body)
 	// FIXME:

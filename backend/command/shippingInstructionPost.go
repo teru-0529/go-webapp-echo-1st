@@ -24,7 +24,7 @@ func NewShippingIsntructionPostCommand(ctx context.Context, body spec.ShippingIn
 }
 
 // FUNCTION:
-func (cmd *ShippingIsntructionPostCommand) Ececute() error {
+func (cmd *ShippingIsntructionPostCommand) Ececute(ctx context.Context) error {
 
 	// PROCESS:
 	// 存在チェック(受注明細)
@@ -33,7 +33,7 @@ func (cmd *ShippingIsntructionPostCommand) Ececute() error {
 	// 登録
 
 	// FIXME:
-	fmt.Println(infra.TraceId(cmd.ctx))
+	fmt.Println(infra.TraceId(ctx))
 	fmt.Println(cmd.body)
 	cmd.OrderNo = cmd.body.OrderNo
 	// FIXME:

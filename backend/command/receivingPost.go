@@ -24,7 +24,7 @@ func NewReceivingPostCommand(ctx context.Context, body spec.ReceivingPostBody) R
 }
 
 // FUNCTION:
-func (cmd *ReceivingPostCommand) Ececute() error {
+func (cmd *ReceivingPostCommand) Ececute(ctx context.Context) error {
 
 	// PROCESS:
 	// 存在チェック(商品)
@@ -33,7 +33,7 @@ func (cmd *ReceivingPostCommand) Ececute() error {
 	// 登録
 
 	// FIXME:
-	fmt.Println(infra.TraceId(cmd.ctx))
+	fmt.Println(infra.TraceId(ctx))
 	fmt.Println(cmd.body)
 	cmd.OrderNo = "RO-0000058"
 	// FIXME:

@@ -27,7 +27,7 @@ func NewCancelInstructionPostCommand(ctx context.Context, body spec.CancelInstru
 }
 
 // FUNCTION:
-func (cmd *CancelInstructionPostCommand) Ececute() error {
+func (cmd *CancelInstructionPostCommand) Ececute(ctx context.Context) error {
 
 	// PROCESS:
 	// 存在チェック(受注明細)
@@ -40,20 +40,20 @@ func (cmd *CancelInstructionPostCommand) Ececute() error {
 	record := &ordersdb.Product{
 		ProductName: "日本刀",
 		CostPrice:   20000,
-		CreatedBy:   traceId(cmd.ctx),
-		UpdatedBy:   traceId(cmd.ctx),
+		CreatedBy:   traceId(ctx),
+		UpdatedBy:   traceId(ctx),
 	}
 	cols := NewRegistrationCols()
 	cols.add(ordersdb.ProductColumns.ProductName)
 	cols.add(ordersdb.ProductColumns.CostPrice)
 	err := record.InsertG(
-		cmd.ctx,
+		ctx,
 		boil.Whitelist(cols.InsertCols...),
 	)
 	fmt.Println(err)
 
 	// FIXME:
-	fmt.Println(infra.TraceId(cmd.ctx))
+	fmt.Println(infra.TraceId(ctx))
 	fmt.Println(cmd.body)
 	cmd.OrderNo = cmd.body.OrderNo
 	// FIXME:

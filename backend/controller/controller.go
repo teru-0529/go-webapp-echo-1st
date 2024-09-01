@@ -42,7 +42,7 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.Order
 	// PROCESS: コマンド実行
 	// FIXME:repository
 	cmd := command.NewReceivingPostCommand(apCtx, receiving)
-	if err := cmd.Ececute(); err != nil {
+	if err := cmd.Ececute(apCtx); err != nil {
 		return err
 	}
 
@@ -72,7 +72,7 @@ func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.Orders
 	// PROCESS: コマンド実行
 	// FIXME:repository
 	cmd := command.NewReceivingQueryCommand(apCtx, qb, qp)
-	if err := cmd.Ececute(); err != nil {
+	if err := cmd.Ececute(apCtx); err != nil {
 		return err
 	}
 
@@ -98,7 +98,7 @@ func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.Ord
 	// PROCESS: コマンド実行
 	// FIXME:repository
 	cmd := command.NewReceivingGetCommand(apCtx, orderNo)
-	if err := cmd.Ececute(); err != nil {
+	if err := cmd.Ececute(apCtx); err != nil {
 		return err
 	}
 
@@ -136,7 +136,7 @@ func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo 
 	// PROCESS: コマンド実行
 	// FIXME:repository
 	cmd := command.NewReceivingPutOperatorCommand(apCtx, orderNo, receivingOperator)
-	if err := cmd.Ececute(); err != nil {
+	if err := cmd.Ececute(apCtx); err != nil {
 		return err
 	}
 
@@ -167,7 +167,7 @@ func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params sp
 	// PROCESS: コマンド実行
 	// FIXME:repository
 	cmd := command.NewCancelInstructionPostCommand(apCtx, cancelInstruction)
-	if err := cmd.Ececute(); err != nil {
+	if err := cmd.Ececute(apCtx); err != nil {
 		return err
 	}
 
@@ -199,7 +199,7 @@ func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context, params 
 	// PROCESS: コマンド実行
 	// FIXME:repository
 	cmd := command.NewShippingIsntructionPostCommand(apCtx, shippingInstruction)
-	if err := cmd.Ececute(); err != nil {
+	if err := cmd.Ececute(apCtx); err != nil {
 		return err
 	}
 

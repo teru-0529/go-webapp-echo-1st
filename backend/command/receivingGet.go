@@ -26,13 +26,13 @@ func NewReceivingGetCommand(ctx context.Context, orderNo spec.OrderNo) Receiving
 }
 
 // FUNCTION:
-func (cmd *ReceivingGetCommand) Ececute() error {
+func (cmd *ReceivingGetCommand) Ececute(ctx context.Context) error {
 
 	// PROCESS:
 	// 取得(受注)
 
 	// FIXME:
-	fmt.Println(infra.TraceId(cmd.ctx))
+	fmt.Println(infra.TraceId(ctx))
 	fmt.Println(cmd.orderNo)
 
 	const layout = "2006-01-02"

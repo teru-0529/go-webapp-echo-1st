@@ -42,13 +42,13 @@ func NewReceivingQueryCommand(ctx context.Context, queryBase QueryBase, queryPar
 }
 
 // FUNCTION:
-func (cmd *ReceivingQueryCommand) Ececute() error {
+func (cmd *ReceivingQueryCommand) Ececute(ctx context.Context) error {
 
 	// PROCESS:
 	// 取得(受注)
 
 	// FIXME:
-	fmt.Println(infra.TraceId(cmd.ctx))
+	fmt.Println(infra.TraceId(ctx))
 	fmt.Println(cmd.queryBase)
 	fmt.Println(*cmd.queryParam.customerName)
 	fmt.Println(*cmd.queryParam.orderStatus)

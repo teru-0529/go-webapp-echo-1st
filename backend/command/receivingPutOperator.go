@@ -24,7 +24,7 @@ func NewReceivingPutOperatorCommand(ctx context.Context, orderNo spec.OrderNo, b
 }
 
 // FUNCTION:
-func (cmd *ReceivingPutOperatorCommand) Ececute() error {
+func (cmd *ReceivingPutOperatorCommand) Ececute(ctx context.Context) error {
 
 	// PROCESS:
 	// 取得(受注)
@@ -33,7 +33,7 @@ func (cmd *ReceivingPutOperatorCommand) Ececute() error {
 	// 更新
 
 	// FIXME:
-	fmt.Println(infra.TraceId(cmd.ctx))
+	fmt.Println(infra.TraceId(ctx))
 	fmt.Println(cmd.orderNo)
 	fmt.Println(cmd.body)
 	// FIXME:

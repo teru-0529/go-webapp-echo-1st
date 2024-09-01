@@ -5,6 +5,7 @@ package command
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -15,18 +16,17 @@ import (
 
 // STRUCT:
 type ReceivingGetCommand struct {
-	ctx      context.Context
 	orderNo  spec.OrderNo
 	Response *spec.ReceivingWithDetail
 }
 
 // FUNCTION:
-func NewReceivingGetCommand(ctx context.Context, orderNo spec.OrderNo) ReceivingGetCommand {
-	return ReceivingGetCommand{ctx: ctx, orderNo: orderNo}
+func NewReceivingGetCommand(orderNo spec.OrderNo) *ReceivingGetCommand {
+	return &ReceivingGetCommand{orderNo: orderNo}
 }
 
 // FUNCTION:
-func (cmd *ReceivingGetCommand) Ececute(ctx context.Context) error {
+func (cmd *ReceivingGetCommand) Execute(ctx context.Context, tx *sql.Tx) error {
 
 	// PROCESS:
 	// 取得(受注)

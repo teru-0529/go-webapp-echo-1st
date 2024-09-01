@@ -5,6 +5,7 @@ package command
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/teru-0529/go-webapp-echo-1st/infra"
@@ -13,18 +14,17 @@ import (
 
 // STRUCT:
 type ShippingIsntructionPostCommand struct {
-	ctx     context.Context
 	body    spec.ShippingInstructionBody
 	OrderNo spec.OrderNo
 }
 
 // FUNCTION:
-func NewShippingIsntructionPostCommand(ctx context.Context, body spec.ShippingInstructionBody) ShippingIsntructionPostCommand {
-	return ShippingIsntructionPostCommand{ctx: ctx, body: body}
+func NewShippingIsntructionPostCommand(body spec.ShippingInstructionBody) *ShippingIsntructionPostCommand {
+	return &ShippingIsntructionPostCommand{body: body}
 }
 
 // FUNCTION:
-func (cmd *ShippingIsntructionPostCommand) Ececute(ctx context.Context) error {
+func (cmd *ShippingIsntructionPostCommand) Execute(ctx context.Context, tx *sql.Tx) error {
 
 	// PROCESS:
 	// 存在チェック(受注明細)
@@ -36,6 +36,7 @@ func (cmd *ShippingIsntructionPostCommand) Ececute(ctx context.Context) error {
 	fmt.Println(infra.TraceId(ctx))
 	fmt.Println(cmd.body)
 	cmd.OrderNo = cmd.body.OrderNo
+	// return errors.New("XXX")
 	// FIXME:
 
 	return nil

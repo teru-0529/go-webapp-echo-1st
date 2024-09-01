@@ -5,6 +5,7 @@ package command
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -29,7 +30,6 @@ func NewReceivingQueryParam(params spec.OrdersReceivingsGetParams) ReceivingQuer
 
 // STRUCT:
 type ReceivingQueryCommand struct {
-	ctx         context.Context
 	queryBase   QueryBase
 	queryParam  ReceivingQueryParam
 	Response    spec.ReceivingArray
@@ -37,12 +37,12 @@ type ReceivingQueryCommand struct {
 }
 
 // FUNCTION:
-func NewReceivingQueryCommand(ctx context.Context, queryBase QueryBase, queryParam ReceivingQueryParam) ReceivingQueryCommand {
-	return ReceivingQueryCommand{ctx: ctx, queryBase: queryBase, queryParam: queryParam}
+func NewReceivingQueryCommand(queryBase QueryBase, queryParam ReceivingQueryParam) *ReceivingQueryCommand {
+	return &ReceivingQueryCommand{queryBase: queryBase, queryParam: queryParam}
 }
 
 // FUNCTION:
-func (cmd *ReceivingQueryCommand) Ececute(ctx context.Context) error {
+func (cmd *ReceivingQueryCommand) Execute(ctx context.Context, tx *sql.Tx) error {
 
 	// PROCESS:
 	// 取得(受注)

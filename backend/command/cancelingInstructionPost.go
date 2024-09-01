@@ -5,6 +5,7 @@ package command
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/teru-0529/go-webapp-echo-1st/infra"
@@ -16,18 +17,17 @@ import (
 
 // STRUCT:
 type CancelInstructionPostCommand struct {
-	ctx     context.Context
 	body    spec.CancelInstructionBody
 	OrderNo spec.OrderNo
 }
 
 // FUNCTION:
-func NewCancelInstructionPostCommand(ctx context.Context, body spec.CancelInstructionBody) CancelInstructionPostCommand {
-	return CancelInstructionPostCommand{ctx: ctx, body: body}
+func NewCancelInstructionPostCommand(body spec.CancelInstructionBody) *CancelInstructionPostCommand {
+	return &CancelInstructionPostCommand{body: body}
 }
 
 // FUNCTION:
-func (cmd *CancelInstructionPostCommand) Ececute(ctx context.Context) error {
+func (cmd *CancelInstructionPostCommand) Execute(ctx context.Context, tx *sql.Tx) error {
 
 	// PROCESS:
 	// 存在チェック(受注明細)
@@ -46,8 +46,9 @@ func (cmd *CancelInstructionPostCommand) Ececute(ctx context.Context) error {
 	cols := NewRegistrationCols()
 	cols.add(ordersdb.ProductColumns.ProductName)
 	cols.add(ordersdb.ProductColumns.CostPrice)
-	err := record.InsertG(
+	err := record.Insert(
 		ctx,
+		tx,
 		boil.Whitelist(cols.InsertCols...),
 	)
 	fmt.Println(err)

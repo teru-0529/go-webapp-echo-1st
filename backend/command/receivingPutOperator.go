@@ -5,6 +5,7 @@ package command
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/teru-0529/go-webapp-echo-1st/infra"
@@ -13,18 +14,17 @@ import (
 
 // STRUCT:
 type ReceivingPutOperatorCommand struct {
-	ctx     context.Context
 	orderNo spec.OrderNo
 	body    spec.ReceivingOperatorBody
 }
 
 // FUNCTION:
-func NewReceivingPutOperatorCommand(ctx context.Context, orderNo spec.OrderNo, body spec.ReceivingOperatorBody) ReceivingPutOperatorCommand {
-	return ReceivingPutOperatorCommand{ctx: ctx, orderNo: orderNo, body: body}
+func NewReceivingPutOperatorCommand(orderNo spec.OrderNo, body spec.ReceivingOperatorBody) *ReceivingPutOperatorCommand {
+	return &ReceivingPutOperatorCommand{orderNo: orderNo, body: body}
 }
 
 // FUNCTION:
-func (cmd *ReceivingPutOperatorCommand) Ececute(ctx context.Context) error {
+func (cmd *ReceivingPutOperatorCommand) Execute(ctx context.Context, tx *sql.Tx) error {
 
 	// PROCESS:
 	// 取得(受注)

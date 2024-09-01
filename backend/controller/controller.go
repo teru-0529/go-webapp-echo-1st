@@ -24,6 +24,7 @@ type ApiController struct{}
 func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.OrdersReceivingsPostParams) error {
 	// PROCESS: アプリコンテキスト
 	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
+	ctx.Logger().Debug("traceId: " + infra.TraceId(apCtx))
 
 	// PROCESS: Bodyパース/バリデーション
 	receiving := spec.ReceivingPostBody{}
@@ -55,6 +56,7 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.Order
 func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.OrdersReceivingsGetParams) error {
 	// PROCESS: アプリコンテキスト
 	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
+	ctx.Logger().Debug("traceId: " + infra.TraceId(apCtx))
 
 	// PROCESS: Queryバリデーション/整形
 	if err := ctx.Validate(params); err != nil {
@@ -84,6 +86,7 @@ func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.Orders
 func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoGetParams) error {
 	// PROCESS: アプリコンテキスト
 	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
+	ctx.Logger().Debug("traceId: " + infra.TraceId(apCtx))
 
 	// PROCESS: Pathバリデーション
 	if err := validation.Validate(&orderNo, spec.OrderNoRule...); err != nil {
@@ -108,6 +111,7 @@ func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.Ord
 func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo spec.OrderNo, params spec.OrdersReceivingsNoOperatorPutParams) error {
 	// PROCESS: アプリコンテキスト
 	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
+	ctx.Logger().Debug("traceId: " + infra.TraceId(apCtx))
 
 	// PROCESS: Pathバリデーション
 	if err := validation.Validate(&orderNo, spec.OrderNoRule...); err != nil {
@@ -145,6 +149,7 @@ func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo 
 func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params spec.OrdersCancelInstructionsPostParams) error {
 	// PROCESS: アプリコンテキスト
 	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
+	ctx.Logger().Debug("traceId: " + infra.TraceId(apCtx))
 
 	// PROCESS: Bodyパース/バリデーション
 	cancelInstruction := spec.CancelInstructionBody{}
@@ -176,6 +181,7 @@ func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params sp
 func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context, params spec.OrdersShippingInstructionsPostParams) error {
 	// PROCESS: アプリコンテキスト
 	apCtx := infra.ConvertCtx(ctx, params.XAccountId)
+	ctx.Logger().Debug("traceId: " + infra.TraceId(apCtx))
 
 	// PROCESS: Bodyパース/バリデーション
 	shippingInstruction := spec.ShippingInstructionBody{}

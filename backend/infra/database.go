@@ -9,17 +9,21 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
-	"github.com/joho/godotenv"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 // FUNCTION: DB setting
-func InitDB(isDebug bool) func() {
+func InitDB(config *Config) func() {
 
-	dns := getDnsEnv()
+	dns := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		config.Postgres.User,
+		config.Postgres.Password,
+		config.Postgres.Hostname,
+		config.Postgres.Port,
+		config.Postgres.Db,
+	)
 
 	// PROCESS:database open
 	con, err := sql.Open("postgres", dns)
@@ -34,33 +38,14 @@ func InitDB(isDebug bool) func() {
 
 	// PROCESS:global connection setting
 	boil.SetDB(con)
-	if isDebug {
-		boil.DebugMode = true
-	}
+
+	boil.DebugMode = config.DebugMode
 
 	// PROCESS:connection test
 	if err = con.Ping(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("*** db connection prepared *** [%s]\n", dns)
+	log.Printf("db connection prepared [%s]\n", dns)
 	return func() { con.Close() }
-}
-
-// FUNCTION:
-func getDnsEnv() string {
-	// dns from .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	dns := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"),
-		os.Getenv("POSTGRES_HOST_NAME"),
-		os.Getenv("POSTGRES_PORT"),
-		os.Getenv("POSTGRES_DB"),
-	)
-	return dns
 }

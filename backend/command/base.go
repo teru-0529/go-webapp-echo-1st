@@ -6,13 +6,19 @@ package command
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/teru-0529/go-webapp-echo-1st/infra"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
+	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
+
+var ErrNotFound = errors.New("resource not found.")
+var ErrOverflow = errors.New("more than permissible value.")
 
 // STRUCT:
 type Command interface {
@@ -46,8 +52,13 @@ func (inv *Invoker) Execute() error {
 	// PROCESS: 処理実行
 	if err := inv.Cmd.Execute(inv.ctx, tx); err != nil {
 		tx.Rollback()
-		// FIXME:
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		if errors.Is(err, ErrNotFound) {
+			return echo.NewHTTPError(http.StatusNotFound, err.Error())
+		} else if errors.Is(err, ErrOverflow) {
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		} else {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
 	}
 
 	tx.Commit()
@@ -70,4 +81,19 @@ func NewQueryBase(limit *spec.Limit, offset *spec.Offset) QueryBase {
 		qb.offset = *offset
 	}
 	return qb
+}
+
+// FUNCTION:
+func (qb *QueryBase) Qm() []qm.QueryMod {
+
+	// PROCESS:
+	mods := []qm.QueryMod{}
+	mods = append(mods, qm.Limit(qb.limit+1))
+	mods = append(mods, qm.Offset(qb.offset))
+	return mods
+}
+
+// FUNCTION: generateTraceId
+func traceId(ctx context.Context) null.String {
+	return null.StringFrom(infra.TraceId(ctx))
 }

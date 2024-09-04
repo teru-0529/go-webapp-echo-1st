@@ -6,16 +6,16 @@ package command
 import (
 	"context"
 	"database/sql"
-	"fmt"
-	"time"
 
 	openapi_types "github.com/oapi-codegen/runtime/types"
-	"github.com/teru-0529/go-webapp-echo-1st/infra"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
+	"github.com/teru-0529/go-webapp-echo-1st/spec/dbspec/ordersdb"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 // STRUCT:
 type ReceivingQueryParam struct {
+	qb           QueryBase
 	customerName *spec.CustomerName
 	orderStatus  *spec.OrderStatus
 }
@@ -23,70 +23,68 @@ type ReceivingQueryParam struct {
 // FUNCTION:
 func NewReceivingQueryParam(params spec.OrdersReceivingsGetParams) ReceivingQueryParam {
 	return ReceivingQueryParam{
+		qb:           NewQueryBase(params.Limit, params.Offset),
 		customerName: params.CustomerName,
 		orderStatus:  params.OrderStatus,
 	}
 }
 
-// STRUCT:
-type ReceivingQueryCommand struct {
-	queryBase   QueryBase
-	queryParam  ReceivingQueryParam
-	Response    spec.ReceivingArray
-	IsRemaining bool
+// FUNCTION:
+func (qp *ReceivingQueryParam) Qm() []qm.QueryMod {
+
+	// PROCESS:
+	mods := []qm.QueryMod{}
+	if qp.customerName != nil {
+		mods = append(mods, ordersdb.ReceivingWhere.CustomerName.EQ(*qp.customerName))
+	}
+	if qp.orderStatus != nil {
+		mods = append(mods, ordersdb.ReceivingWhere.OrderStatus.EQ(ordersdb.OrderStatus(*qp.orderStatus)))
+	}
+	mods = append(mods, qp.qb.Qm()...)
+	return mods
 }
 
 // FUNCTION:
-func NewReceivingQueryCommand(queryBase QueryBase, queryParam ReceivingQueryParam) *ReceivingQueryCommand {
-	return &ReceivingQueryCommand{queryBase: queryBase, queryParam: queryParam}
+func (qp *ReceivingQueryParam) Limit() int {
+	return qp.qb.limit
+}
+
+// STRUCT:
+type ReceivingQueryCommand struct {
+	qp          ReceivingQueryParam
+	Response    spec.ReceivingArray
+	IsRemaining bool
+	orderRepo   iReceivingRepository
+}
+
+// FUNCTION:
+func NewReceivingQueryCommand(params spec.OrdersReceivingsGetParams, orderRepo iReceivingRepository) *ReceivingQueryCommand {
+	return &ReceivingQueryCommand{qp: NewReceivingQueryParam(params), orderRepo: orderRepo}
 }
 
 // FUNCTION:
 func (cmd *ReceivingQueryCommand) Execute(ctx context.Context, tx *sql.Tx) error {
 
 	// PROCESS:
-	// 取得(受注)
+	// 検索(受注)
+	receivings, isRemaining, err := cmd.orderRepo.Query(ctx, tx, cmd.qp)
+	if err != nil {
+		return err
+	}
 
-	// FIXME:
-	fmt.Println(infra.TraceId(ctx))
-	fmt.Println(cmd.queryBase)
-	fmt.Println(*cmd.queryParam.customerName)
-	fmt.Println(*cmd.queryParam.orderStatus)
-
-	const layout = "2006-01-02"
-	cmd.Response = []spec.Receiving{}
-	t, _ := time.Parse(layout, "2024-01-01")
-	cmd.Response = append(cmd.Response, spec.Receiving{
-		OrderNo:             "RO-0000001",
-		OrderDate:           openapi_types.Date{Time: t},
-		OperatorName:        "織田信長",
-		CustomerName:        "徳川物産株式会社",
-		TotalOrderPrice:     280000,
-		RemainingOrderPrice: 280000,
-		OrderStatus:         "COMPLETED",
-	})
-	t, _ = time.Parse(layout, "2024-03-14")
-	cmd.Response = append(cmd.Response, spec.Receiving{
-		OrderNo:             "RO-0000002",
-		OrderDate:           openapi_types.Date{Time: t},
-		OperatorName:        "織田信長",
-		CustomerName:        "株式会社島津製作所",
-		TotalOrderPrice:     0,
-		RemainingOrderPrice: 0,
-		OrderStatus:         "CANCELED",
-	})
-	t, _ = time.Parse(layout, "2024-04-26")
-	cmd.Response = append(cmd.Response, spec.Receiving{
-		OrderNo:             "RO-0000003",
-		OrderDate:           openapi_types.Date{Time: t},
-		OperatorName:        "上杉謙信",
-		CustomerName:        "徳川物産株式会社",
-		TotalOrderPrice:     145000,
-		RemainingOrderPrice: 34000,
-		OrderStatus:         "WORK_IN_PROGRESS",
-	})
-	cmd.IsRemaining = true
-	// FIXME:
-
+	result := []spec.Receiving{}
+	for _, receiving := range receivings {
+		result = append(result, spec.Receiving{
+			OrderNo:             receiving.OrderNo,
+			OrderDate:           openapi_types.Date{Time: receiving.OrderDate},
+			OperatorName:        receiving.OperatorName,
+			CustomerName:        receiving.CustomerName,
+			TotalOrderPrice:     receiving.TotalOrderPrice,
+			RemainingOrderPrice: receiving.RemainingOrderPrice,
+			OrderStatus:         spec.OrderStatus(receiving.OrderStatus),
+		})
+	}
+	cmd.Response = result
+	cmd.IsRemaining = isRemaining
 	return nil
 }

@@ -6,24 +6,25 @@ package command
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
-	"github.com/teru-0529/go-webapp-echo-1st/infra"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 	"github.com/teru-0529/go-webapp-echo-1st/spec/dbspec/ordersdb"
 	"github.com/volatiletech/null/v8"
-	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 // STRUCT:
 type CancelInstructionPostCommand struct {
-	body    spec.CancelInstructionBody
-	OrderNo spec.OrderNo
+	body      spec.CancelInstructionBody
+	OrderNo   spec.OrderNo
+	orderRepo iReceivingRepository
+	instRepo  iCancelInstructionRepository
 }
 
 // FUNCTION:
-func NewCancelInstructionPostCommand(body spec.CancelInstructionBody) *CancelInstructionPostCommand {
-	return &CancelInstructionPostCommand{body: body}
+func NewCancelInstructionPostCommand(body spec.CancelInstructionBody, orderRepo iReceivingRepository, instRepo iCancelInstructionRepository) *CancelInstructionPostCommand {
+	return &CancelInstructionPostCommand{body: body, orderRepo: orderRepo, instRepo: instRepo}
 }
 
 // FUNCTION:
@@ -31,59 +32,35 @@ func (cmd *CancelInstructionPostCommand) Execute(ctx context.Context, tx *sql.Tx
 
 	// PROCESS:
 	// 存在チェック(受注明細)
+	detail, err := cmd.orderRepo.DetailGet(ctx, tx, cmd.body.OrderNo, cmd.body.ProductId)
+	if errors.Is(err, sql.ErrNoRows) {
+		return fmt.Errorf("ReceivingDetail: %w", ErrNotFound)
+	} else if err != nil {
+		return err
+	}
+	if detail.RemainingQuantity < cmd.body.Quantity {
+		return fmt.Errorf("quantity: %w", ErrOverflow)
+	}
+
+	// PROCESS:
+	// 構造体
+	record := ordersdb.CancelInstruction{
+		OrderNo:        cmd.body.OrderNo,
+		ProductID:      cmd.body.ProductId,
+		OperatorName:   cmd.body.OperatorName,
+		CancelQuantity: cmd.body.Quantity,
+		CancelReason:   null.StringFromPtr(cmd.body.Reason),
+		CreatedBy:      traceId(ctx),
+		UpdatedBy:      traceId(ctx),
+	}
 
 	// PROCESS:
 	// 登録
-
-	// FIXME:
-	// DB接続確認
-	record := &ordersdb.Product{
-		ProductName: "日本刀",
-		CostPrice:   20000,
-		CreatedBy:   traceId(ctx),
-		UpdatedBy:   traceId(ctx),
+	_, err = cmd.instRepo.Save(ctx, tx, record)
+	if err != nil {
+		return err
 	}
-	cols := NewRegistrationCols()
-	cols.add(ordersdb.ProductColumns.ProductName)
-	cols.add(ordersdb.ProductColumns.CostPrice)
-	err := record.Insert(
-		ctx,
-		tx,
-		boil.Whitelist(cols.InsertCols...),
-	)
-	fmt.Println(err)
 
-	// FIXME:
-	fmt.Println(infra.TraceId(ctx))
-	fmt.Println(cmd.body)
 	cmd.OrderNo = cmd.body.OrderNo
-	// FIXME:
-
 	return nil
-}
-
-// TITLE: 変更対象フィールド
-
-type RegistrationCols struct {
-	InsertCols []string
-	UpdateCols []string
-}
-
-// FUNCTION: new
-func NewRegistrationCols() *RegistrationCols {
-	return &RegistrationCols{
-		InsertCols: []string{"created_by", "updated_by"},
-		UpdateCols: []string{"updated_by"},
-	}
-}
-
-// FUNCTION:
-func (rc *RegistrationCols) add(col string) {
-	rc.InsertCols = append(rc.InsertCols, col)
-	rc.UpdateCols = append(rc.UpdateCols, col)
-}
-
-// FUNCTION: generateTraceId
-func traceId(ctx context.Context) null.String {
-	return null.StringFrom(infra.TraceId(ctx))
 }

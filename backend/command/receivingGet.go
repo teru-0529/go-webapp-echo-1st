@@ -6,23 +6,23 @@ package command
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
-	"time"
 
 	openapi_types "github.com/oapi-codegen/runtime/types"
-	"github.com/teru-0529/go-webapp-echo-1st/infra"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
 // STRUCT:
 type ReceivingGetCommand struct {
-	orderNo  spec.OrderNo
-	Response *spec.ReceivingWithDetail
+	orderNo   spec.OrderNo
+	Response  *spec.ReceivingWithDetail
+	orderRepo iReceivingRepository
 }
 
 // FUNCTION:
-func NewReceivingGetCommand(orderNo spec.OrderNo) *ReceivingGetCommand {
-	return &ReceivingGetCommand{orderNo: orderNo}
+func NewReceivingGetCommand(orderNo spec.OrderNo, orderRepo iReceivingRepository) *ReceivingGetCommand {
+	return &ReceivingGetCommand{orderNo: orderNo, orderRepo: orderRepo}
 }
 
 // FUNCTION:
@@ -30,57 +30,38 @@ func (cmd *ReceivingGetCommand) Execute(ctx context.Context, tx *sql.Tx) error {
 
 	// PROCESS:
 	// 取得(受注)
+	receiving, err := cmd.orderRepo.Get(ctx, tx, cmd.orderNo)
+	if errors.Is(err, sql.ErrNoRows) {
+		return fmt.Errorf("Receiving: %w", ErrNotFound)
+	} else if err != nil {
+		return err
+	}
 
-	// FIXME:
-	fmt.Println(infra.TraceId(ctx))
-	fmt.Println(cmd.orderNo)
-
-	const layout = "2006-01-02"
-	t, _ := time.Parse(layout, "2024-05-26")
-	cmd.Response = &spec.ReceivingWithDetail{
-		OrderNo:             "RO-0000056",
-		OrderDate:           openapi_types.Date{Time: t},
-		OperatorName:        "織田信長",
-		CustomerName:        "徳川物産株式会社",
-		TotalOrderPrice:     230200,
-		RemainingOrderPrice: 111200,
-		OrderStatus:         "WORK_IN_PROGRESS",
+	result := spec.ReceivingWithDetail{
+		OrderNo:             receiving.OrderNo,
+		OrderDate:           openapi_types.Date{Time: receiving.OrderDate},
+		OperatorName:        receiving.OperatorName,
+		CustomerName:        receiving.CustomerName,
+		TotalOrderPrice:     receiving.TotalOrderPrice,
+		RemainingOrderPrice: receiving.RemainingOrderPrice,
+		OrderStatus:         spec.OrderStatus(receiving.OrderStatus),
 		Details:             []spec.ReceivingDetail{},
 	}
-	cmd.Response.Details = append(cmd.Response.Details, spec.ReceivingDetail{
-		ProductId:         "P0001",
-		OrderQuantity:     5,
-		ShippingQuantity:  1,
-		CancelQuantity:    0,
-		RemainingQuantity: 4,
-		SellingPrice:      27800,
-		CostPrice:         19800,
-		ProfitRate:        0.29,
-		OrderStatus:       "WORK_IN_PROGRESS",
-	})
-	cmd.Response.Details = append(cmd.Response.Details, spec.ReceivingDetail{
-		ProductId:         "P0005",
-		OrderQuantity:     3,
-		ShippingQuantity:  2,
-		CancelQuantity:    1,
-		RemainingQuantity: 0,
-		SellingPrice:      45600,
-		CostPrice:         28700,
-		ProfitRate:        0.37,
-		OrderStatus:       "COMPLETED",
-	})
-	cmd.Response.Details = append(cmd.Response.Details, spec.ReceivingDetail{
-		ProductId:         "P0006",
-		OrderQuantity:     1,
-		ShippingQuantity:  0,
-		CancelQuantity:    1,
-		RemainingQuantity: 0,
-		SellingPrice:      100200,
-		CostPrice:         73800,
-		ProfitRate:        0.26,
-		OrderStatus:       "CANCELED",
-	})
-	// FIXME:
-
+	for _, detail := range receiving.R.OrderNoReceivingDetails {
+		profitRate, _ := detail.ProfitRate.Float64()
+		fmt.Println(profitRate)
+		result.Details = append(result.Details, spec.ReceivingDetail{
+			ProductId:         detail.ProductID,
+			OrderQuantity:     detail.ReceivingQuantity,
+			ShippingQuantity:  detail.ShippingQuantity,
+			CancelQuantity:    detail.CancelQuantity,
+			RemainingQuantity: detail.RemainingQuantity,
+			SellingPrice:      detail.SelllingPrice,
+			CostPrice:         detail.CostPrice,
+			ProfitRate:        float32(profitRate),
+			OrderStatus:       spec.OrderStatus(detail.OrderStatus),
+		})
+	}
+	cmd.Response = &result
 	return nil
 }

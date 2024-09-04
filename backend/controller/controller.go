@@ -11,6 +11,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/teru-0529/go-webapp-echo-1st/command"
+	"github.com/teru-0529/go-webapp-echo-1st/repository"
 	spec "github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
@@ -36,13 +37,8 @@ func (ac ApiController) OrdersReceivingsPost(ctx echo.Context, params spec.Order
 	}
 
 	// PROCESS: コマンド実行
-	// FIXME:repository
-	cmd := command.NewReceivingPostCommand(receiving)
-	inv := command.NewInvoker(
-		ctx,
-		params.XAccountId,
-		cmd,
-	)
+	cmd := command.NewReceivingPostCommand(receiving, *repository.NewReceivingRepo(), *repository.NewProductRepo())
+	inv := command.NewInvoker(ctx, params.XAccountId, cmd)
 	if err := inv.Execute(); err != nil {
 		return err
 	}
@@ -64,17 +60,10 @@ func (ac ApiController) OrdersReceivingsGet(ctx echo.Context, params spec.Orders
 		}
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
-	qb := command.NewQueryBase(params.Limit, params.Offset)
-	qp := command.NewReceivingQueryParam(params)
 
 	// PROCESS: コマンド実行
-	// FIXME:repository
-	cmd := command.NewReceivingQueryCommand(qb, qp)
-	inv := command.NewInvoker(
-		ctx,
-		params.XAccountId,
-		cmd,
-	)
+	cmd := command.NewReceivingQueryCommand(params, *repository.NewReceivingRepo())
+	inv := command.NewInvoker(ctx, params.XAccountId, cmd)
 	if err := inv.Execute(); err != nil {
 		return err
 	}
@@ -96,13 +85,8 @@ func (ac ApiController) OrdersReceivingsNoGet(ctx echo.Context, orderNo spec.Ord
 	}
 
 	// PROCESS: コマンド実行
-	// FIXME:repository
-	cmd := command.NewReceivingGetCommand(orderNo)
-	inv := command.NewInvoker(
-		ctx,
-		params.XAccountId,
-		cmd,
-	)
+	cmd := command.NewReceivingGetCommand(orderNo, *repository.NewReceivingRepo())
+	inv := command.NewInvoker(ctx, params.XAccountId, cmd)
 	if err := inv.Execute(); err != nil {
 		return err
 	}
@@ -136,13 +120,8 @@ func (ac ApiController) OrdersReceivingsNoOperatorPut(ctx echo.Context, orderNo 
 	}
 
 	// PROCESS: コマンド実行
-	// FIXME:repository
-	cmd := command.NewReceivingPutOperatorCommand(orderNo, receivingOperator)
-	inv := command.NewInvoker(
-		ctx,
-		params.XAccountId,
-		cmd,
-	)
+	cmd := command.NewReceivingPutOperatorCommand(orderNo, receivingOperator, *repository.NewReceivingRepo())
+	inv := command.NewInvoker(ctx, params.XAccountId, cmd)
 	if err := inv.Execute(); err != nil {
 		return err
 	}
@@ -169,13 +148,8 @@ func (ac ApiController) OrdersCancelInstructionsPost(ctx echo.Context, params sp
 	}
 
 	// PROCESS: コマンド実行
-	// FIXME:repository
-	cmd := command.NewCancelInstructionPostCommand(cancelInstruction)
-	inv := command.NewInvoker(
-		ctx,
-		params.XAccountId,
-		cmd,
-	)
+	cmd := command.NewCancelInstructionPostCommand(cancelInstruction, *repository.NewReceivingRepo(), *repository.NewCancelRepo())
+	inv := command.NewInvoker(ctx, params.XAccountId, cmd)
 	if err := inv.Execute(); err != nil {
 		return err
 	}
@@ -203,13 +177,8 @@ func (ac ApiController) OrdersShippingInstructionsPost(ctx echo.Context, params 
 	}
 
 	// PROCESS: コマンド実行
-	// FIXME:repository
-	cmd := command.NewShippingIsntructionPostCommand(shippingInstruction)
-	inv := command.NewInvoker(
-		ctx,
-		params.XAccountId,
-		cmd,
-	)
+	cmd := command.NewShippingIsntructionPostCommand(shippingInstruction, *repository.NewReceivingRepo(), *repository.NewShippingRepo())
+	inv := command.NewInvoker(ctx, params.XAccountId, cmd)
 	if err := inv.Execute(); err != nil {
 		return err
 	}

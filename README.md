@@ -18,9 +18,10 @@ echoを使ったAPIサーバー
 * [x] dbmigration
 * [x] API定義
 * [x] PostgRest
-* APIgenerate
-* ORMgenerate
-* coding
+* [x] APIgenerate
+* [x] ORMgenerate
+* [x] coding
+* リリース作業(Dockerイメージ化？)
 
 ## appendix
 
@@ -37,3 +38,8 @@ echoを使ったAPIサーバー
 * [SQLBoilerによるPostgreSQLの操作についての話](https://syu-m-5151.hatenablog.com/entry/2024/01/23/161638)
 * [SQLBoilerのちょっとしたTips集](https://zenn.dev/ryomak/articles/sqlboiler-go)
 * [Go の入力バリデーションパッケージ ozzo-validation を試した。](https://zenn.dev/mattn/articles/893f28eff96129)
+* [【Go】デファクトなlinter staticcheckの設定方法](https://qiita.com/yagi_eng/items/1c34f9691128c51846e7)
+* [[Go 1.13~] errors.Is と errors.As の違いについてお気持ちを理解する](https://qiita.com/hiro_o918/items/fb01014e51354b8bb49f)
+* [Golang による Strategy パターン](https://zenn.dev/empenguin/articles/09c1b50ebeb8e7)
+* [GoにおけるORMと、SQLBoiler入門マニュアル](https://zenn.dev/gami/articles/0fb2cf8b36aa09#sqlboiler)
+* [GolangのORM SQLBoilerを使ってみる - 実装編(Create/Update/Delete)](https://ken-aio.github.io/post/2019/03/25/golang-sqlboiler-cud/#update)

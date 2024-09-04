@@ -1,0 +1,15 @@
+pkgname: ordersdb
+output: spec/dbspec/ordersdb
+wipe: true
+no-tests: true
+add-enum-types: true
+no-auto-timestamps: true
+add-global-variants: true
+psql:
+  dbname: sandbox
+  host: 127.0.0.1
+  port: 7100
+  user: root
+  pass: password
+  sslmode: disable
+  schema: orders

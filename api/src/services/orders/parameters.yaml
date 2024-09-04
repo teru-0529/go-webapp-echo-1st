@@ -25,12 +25,3 @@ query:
     schema:
       $ref: ../../api_elements.yaml#/orderStatus
     description: 【検索条件】受注ステータス
-
-header:
-  # トレースID
-  traceId:
-    name: x-tarace-id
-    in: header
-    required: true
-    schema:
-      $ref: ../../api_elements.yaml#/traceId

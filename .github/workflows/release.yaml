@@ -21,7 +21,8 @@ jobs:
       - name: Setup go
         uses: actions/setup-go@v3
         with:
-          go-version-file: ./backend/go.mod
+          go-version-file: ./go.mod
+          workdir: ./backend
           cache: true
 
       - name: Run GoRelease

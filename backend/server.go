@@ -10,22 +10,22 @@ import (
 	"github.com/teru-0529/go-webapp-echo-1st/spec/apispec"
 )
 
-const DEBUG_MODE = true
-
 // FUNCTION:
 func main() {
+	// PROCESS: envファイルのロード
+	config := infra.LeadEnv()
 
-	// データベース(Sqlboiler)の設定
-	cleanUp := infra.InitDB(DEBUG_MODE)
+	// PROCESS: データベース(Sqlboiler)の設定
+	cleanUp := infra.InitDB(config)
 	defer cleanUp()
 
-	// Webサーバー(echo)の設定
-	e := infra.InitServer(DEBUG_MODE)
+	// PROCESS: Webサーバー(echo)の設定
+	e := infra.InitServer(config.DebugMode)
 
-	// OpenAPI の仕様を満たす構造体をハンドラーとして登録する
+	// PROCESS: OpenAPI の仕様を満たす構造体をハンドラーとして登録する
 	api := controller.ApiController{}
 	apispec.RegisterHandlers(e, api)
 
 	// サーバースタート
-	e.Logger.Fatal(e.Start(":7011"))
+	e.Logger.Fatal(e.Start(":8080"))
 }

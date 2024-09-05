@@ -43,3 +43,7 @@ echoを使ったAPIサーバー
 * [Golang による Strategy パターン](https://zenn.dev/empenguin/articles/09c1b50ebeb8e7)
 * [GoにおけるORMと、SQLBoiler入門マニュアル](https://zenn.dev/gami/articles/0fb2cf8b36aa09#sqlboiler)
 * [GolangのORM SQLBoilerを使ってみる - 実装編(Create/Update/Delete)](https://ken-aio.github.io/post/2019/03/25/golang-sqlboiler-cud/#update)
+* [Goでファイルの存在チェック](https://qiita.com/hnakamur/items/848097aad846d40ae84b)
+* https://github.com/sethvargo/go-envconfig
+* [Docker | host.docker.internal でコンテナからホスト上のサービスにアクセスする](https://zenn.dev/collabostyle/articles/1152b59484107b)
+* [GoReleaser でマルチプラットフォーム対応の Docker イメージを作る](https://qiita.com/frozenbonito/items/343ec66b292e3c0e154d)

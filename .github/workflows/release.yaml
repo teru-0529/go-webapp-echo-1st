@@ -40,4 +40,4 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_PACKAGE }}
-          GORELEASER_KEY: ${{ secrets.ACCESS_TOKEN_FOR_PACKAGE }}
+          # GORELEASER_KEY: ${{ secrets.ACCESS_TOKEN_FOR_PACKAGE }}

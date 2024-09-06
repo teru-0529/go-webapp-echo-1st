@@ -39,5 +39,5 @@ jobs:
           workdir: ./backend
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_PACKAGE }}
           GORELEASER_KEY: ${{ secrets.ACCESS_TOKEN_FOR_PACKAGE }}

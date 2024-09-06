@@ -47,3 +47,6 @@ echoを使ったAPIサーバー
 * https://github.com/sethvargo/go-envconfig
 * [Docker | host.docker.internal でコンテナからホスト上のサービスにアクセスする](https://zenn.dev/collabostyle/articles/1152b59484107b)
 * [GoReleaser でマルチプラットフォーム対応の Docker イメージを作る](https://qiita.com/frozenbonito/items/343ec66b292e3c0e154d)
+* [Multi-platform Docker images with GoReleaser and GitHub Actions](https://carlosbecker.com/posts/multi-platform-docker-images-goreleaser-gh-actions/)
+
+conclusion

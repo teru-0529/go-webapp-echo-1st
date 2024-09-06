@@ -30,7 +30,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.ACCESS_TOKEN_FOR_PACKAGE }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run GoRelease
         uses: goreleaser/goreleaser-action@v5
@@ -39,5 +39,4 @@ jobs:
           workdir: ./backend
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_FOR_PACKAGE }}
-          GORELEASER_KEY: ${{ secrets.ACCESS_TOKEN_FOR_PACKAGE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

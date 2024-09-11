@@ -49,5 +49,45 @@ services:
     networks:
       - app_network
 
+  dbreseter:
+    image: ghcr.io/teru-0529/dbreseter-by-echo:v1.1.0
+    ports:
+      - ${RESETTER_HOST_PORT}:${RESETTER_PORT}
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST_NAME: db
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      DEBUG: true
+    # tty: true
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - app_network
+
+  app:
+    image: ghcr.io/teru-0529/orders-api-by-echo:v0.2.10
+    ports:
+      - ${ORDERS_APP_HOST_PORT}:${ORDERS_APP_PORT}
+    # env_file:
+    #   - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST_NAME: db
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      DEBUG: true
+    # tty: true
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - app_network
+
 networks:
   app_network:

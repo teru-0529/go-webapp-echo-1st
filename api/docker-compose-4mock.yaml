@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   swagger-ui:
     image: swaggerapi/swagger-ui
@@ -10,11 +8,17 @@ services:
       - ./openapi/${API_NAME}/openapi.yaml:/openapi.yaml
     environment:
       SWAGGER_JSON: /openapi.yaml
-  mock-server:
+
+  mock-api:
     image: stoplight/prism:3
-    container_name: ${API_NAME}-mock-server
+    container_name: ${API_NAME}-mock-api
     ports:
       - "${MOCK_SERVER_PORT}:4010"
     volumes:
       - ./openapi/${API_NAME}/openapi.yaml:/openapi.yaml
     command: mock -h 0.0.0.0 /openapi.yaml
+
+networks:
+  default:
+    name: app_network
+    external: true

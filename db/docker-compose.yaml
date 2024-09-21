@@ -1,11 +1,9 @@
-version: "3.8"
-
 services:
   db:
     image: postgres:${POSTGRES_VERSION}-bookworm
     container_name: db
     ports:
-      - ${POSTGRES_HOST_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_HOST_PORT}:5432
     environment:
       TZ: ${TIME_ZONE}
       PGTZ: ${TIME_ZONE}
@@ -14,45 +12,48 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     tty: true
     restart: always
-    user: root
+    healthcheck:  # コンテナの起動チェック
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     volumes:
       - ./data/init:/docker-entrypoint-initdb.d
-    networks:
-      - app_network
 
   pgweb:
     image: sosedoff/pgweb
     container_name: pgweb
     ports:
-      - ${PGWEB_HOST_PORT}:${PGWEB_PORT}
+      - ${PGWEB_HOST_PORT}:8081
     environment:
       TZ: ${TIME_ZONE}
       PGTZ: ${TIME_ZONE}
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
     restart: always
     depends_on:
-      - db
-    networks:
-      - app_network
+      db:
+        condition: service_healthy
 
   postgrest:
     image: postgrest/postgrest
+    container_name: postgrest
     ports:
-      - ${POSTGREST_HOST_PORT}:${POSTGREST_PORT}
+      - ${POSTGREST_HOST_PORT}:3000
     environment:
-      PGRST_DB_URI: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
+      PGRST_DB_URI: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       PGRST_OPENAPI_SERVER_PROXY_URI: http://localhost:${POSTGREST_HOST_PORT}
       PGRST_DB_SCHEMA: ${POSTGREST_SCHEMAS}
       PGRST_DB_ANON_ROLE: ${POSTGRES_USER}
     depends_on:
-      - db
-    networks:
-      - app_network
+      db:
+        condition: service_healthy
 
   dbreseter:
     image: ghcr.io/teru-0529/dbreseter-by-echo:v1.1.0
+    container_name: dbreseter
     ports:
-      - ${RESETTER_HOST_PORT}:${RESETTER_PORT}
+      - ${RESETTER_HOST_PORT}:8080
     env_file:
       - .env
     environment:
@@ -60,34 +61,31 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST_NAME: db
-      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_PORT: 5432
       DEBUG: true
-    # tty: true
     restart: always
     depends_on:
-      - db
-    networks:
-      - app_network
+      db:
+        condition: service_healthy
 
-  app:
+  api:
     image: ghcr.io/teru-0529/orders-api-by-echo:v0.2.10
+    container_name: orders-api
     ports:
-      - ${ORDERS_APP_HOST_PORT}:${ORDERS_APP_PORT}
-    # env_file:
-    #   - .env
+      - ${ORDERS_APP_HOST_PORT}:8080
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST_NAME: db
-      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_PORT: 5432
       DEBUG: true
-    # tty: true
     restart: always
     depends_on:
-      - db
-    networks:
-      - app_network
+      db:
+        condition: service_healthy
 
 networks:
-  app_network:
+  default:
+    name: app_network
+    external: true
